@@ -1,23 +1,39 @@
 from google.appengine.ext import ndb
 
 
+class User(ndb.Model):
+    """ A user that knows if it they are verified as a valid Rose-Hulman user. """
+    verified = ndb.BooleanProperty(default=False)
+
+class Term(ndb.Model):
+    """ A termcode for a class """
+    code = ndb.StringProperty()
+
+class Instructor(ndb.Model):
+    """ An instructor that teaches a section of a course """
+    name = ndb.StringProperty()
+    username = ndb.StringProperty()
+    department = ndb.StringProperty()
 
 class Course(ndb.Model):
+    """ A course that Rose-Hulman offers during a year. """
     name = ndb.StringProperty()
     description = ndb.TextProperty()
-    overall_rating = ndb.FloatProperty(default=0.0)  # Or do we just want to calculate this all the time?
-    reviews = ndb.KeyProperty(kind=Review, repeated=True)
-    taught_by = ndb.KeyProperty(kind=Instructor, repeated=True)
+    # overall_rating = ndb.FloatProperty(default=0.0)  # Or do we just want to calculate this all the time?
+    #  We can't use these or we get circular dependancies
+    # reviews = ndb.KeyProperty(kind=Review, repeated=True)
+    # taught_by = ndb.KeyProperty(kind=Instructor, repeated=True)
 
 class Section(ndb.Model):
+    """ A section of a class that is being offered during a term. """
     term = ndb.KeyProperty(kind=Term)
-    # class = ndb.KeyProperty(kind=Class) # Don't need do to parent Key?
     hour = ndb.StringProperty()
     instructor = ndb.KeyProperty(kind=Instructor)
     location = ndb.StringProperty()
     section = ndb.StringProperty()
 
 class Review(ndb.Model):
+    """ A review object that a user gives to a professor and a class. """
     # Professor ratings
     helpfulness = ndb.IntegerProperty()
     clarity = ndb.IntegerProperty()
@@ -28,16 +44,10 @@ class Review(ndb.Model):
     class_ease = ndb.IntegerProperty()
     # Other
     comments = ndb.TextProperty()
+    # Keys to the courses
     course = ndb.KeyProperty(kind=Course)
     instructor = ndb.KeyProperty(kind=Instructor)
 
-class Term(ndb.Model):
-    code = ndb.StringProperty()
 
-class Instructor(ndb.Model):
-    name = ndb.StringProperty()
-    username = ndb.StringProperty()
-    overall_rating = ndb.FloatProperty(default=0.0)  # Do we want to just calculate this?
-    reviews = ndb.KeyProperty(kind=Review, repeated=True)
-    classes = ndb.KeyProperty(kind=Course, repeated=True)
-    department = ndb.StringProperty()
+
+
