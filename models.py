@@ -1,15 +1,17 @@
 from google.appengine.ext import ndb
 
+
+
 class Course(ndb.Model):
     name = ndb.StringProperty()
     description = ndb.TextProperty()
-    overall_rating = ndb.FloatProperty(default=0.0)
+    overall_rating = ndb.FloatProperty(default=0.0)  # Or do we just want to calculate this all the time?
     reviews = ndb.KeyProperty(kind=Review, repeated=True)
     taught_by = ndb.KeyProperty(kind=Instructor, repeated=True)
 
 class Section(ndb.Model):
     term = ndb.KeyProperty(kind=Term)
-    # class = ndb.KeyProperty(kind=Class) # Don't need to to parent Key?
+    # class = ndb.KeyProperty(kind=Class) # Don't need do to parent Key?
     hour = ndb.StringProperty()
     instructor = ndb.KeyProperty(kind=Instructor)
     location = ndb.StringProperty()
@@ -24,6 +26,7 @@ class Review(ndb.Model):
     grasp = ndb.IntegerProperty()
     workload = ndb.IntegerProperty()
     class_ease = ndb.IntegerProperty()
+    # Other
     comments = ndb.TextProperty()
     course = ndb.KeyProperty(kind=Course)
     instructor = ndb.KeyProperty(kind=Instructor)
@@ -34,7 +37,7 @@ class Term(ndb.Model):
 class Instructor(ndb.Model):
     name = ndb.StringProperty()
     username = ndb.StringProperty()
-    overall_rating = ndb.FloatProperty(default=0.0)
+    overall_rating = ndb.FloatProperty(default=0.0)  # Do we want to just calculate this?
     reviews = ndb.KeyProperty(kind=Review, repeated=True)
     classes = ndb.KeyProperty(kind=Course, repeated=True)
     department = ndb.StringProperty()

@@ -37,8 +37,8 @@ class SectionPageParser:
 		password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
 
 		# Add the KEBEROUS username and password.
-		username = "rockwotj"
-		password = "RoseRed33"
+		username = ""
+		password = ""
 
 		# add the password for the URL
 		password_mgr.add_password(None, SectionPageParser.url, username, password)
@@ -223,6 +223,6 @@ class section:
 # imported by another module), then call the 'main' function.
 #-----------------------------------------------------------------------
 if __name__ == '__main__':
-	parser = SectionPageParser()
+	parser = SectionPageParser("201520")
 	for section in parser.parse()[:10]:
 		print section
