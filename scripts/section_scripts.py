@@ -4,7 +4,7 @@ To get the classes for Rose-Hulman
 
 
 Created on Sep 24, 2014.
-Written by: rockwotj.
+@author: rockwotj.
 """
 
 from HTMLParser import HTMLParser
@@ -28,17 +28,13 @@ class SectionPageParser:
 	FIND_SCHEDULE = 5
 	END_ROW = 6
 
-	def __init__(self, termcode):
+	def __init__(self, termcode, username, password):
 		""" Creates a new SectionPageParser that pulls data off of the Rose-Hulman Schedule look-up page 
-			Need to pass in the termcode (i.e. 201510) to get the sections for that term.
-		
+			Need to pass in the termcode (i.e. 201510) to get the sections for that term and
+			a KERBEROS username and password to pull the data into the database.
 		"""
 		# create a password manager
 		password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-
-		# Add the KEBEROUS username and password.
-		username = ""
-		password = ""
 
 		# add the password for the URL
 		password_mgr.add_password(None, SectionPageParser.url, username, password)
@@ -75,7 +71,7 @@ class SectionPageParser:
 
 	def get_professor_name(self, usr_id):
 		""" 
-		This method takes a professor's KEBEROUS username and returns their full name 
+		This method takes a professor's KEBEROS username and returns their full name 
 		Example:
 			SectionPageParser.get_professor_name("boutell") # returns: 'Matthew R Boutell'
 		"""
@@ -223,6 +219,6 @@ class section:
 # imported by another module), then call the 'main' function.
 #-----------------------------------------------------------------------
 if __name__ == '__main__':
-	parser = SectionPageParser("201520")
+	parser = SectionPageParser("201520", "", "")
 	for section in parser.parse()[:10]:
 		print section

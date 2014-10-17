@@ -16,10 +16,8 @@ handlers:
   script: main.app
   login: required
 
-- url: /admin/.*
-  script: admin.app
-  login: admin
-
 libraries:
 - name: webapp2
   version: "2.5.2"
+- name: jinja2
+  version: latest
