@@ -1,6 +1,4 @@
-body {
-	font: 1em "Fira+Sans";
-}
+
 
 #varsityR {
 	position: relative;
@@ -12,5 +10,5 @@ body {
 }
 
 #main-page-h1 {
-	font: 8em "Fire+Sans";
+	font: 6.1em "Sigmar One" !important;
 }
