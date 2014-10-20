@@ -14,11 +14,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import os
+
+import jinja2
 import webapp2
+
+
+jinja_env = jinja2.Environment(
+  loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+  autoescape=True)
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Hello world!')
+        template = jinja_env.get_template("templates/landingPage.html")
+        self.response.write(template.render({}))
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)

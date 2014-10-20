@@ -1,0 +1,16 @@
+body {
+	font: 1em "Fira+Sans";
+}
+
+#varsityR {
+	position: relative;
+	top: -5px;
+}
+
+.navbar-brand {
+	color: white !important;
+}
+
+#main-page-h1 {
+	font: 8em "Fire+Sans";
+}
