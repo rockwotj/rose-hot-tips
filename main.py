@@ -14,9 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import os
+
+import jinja2
 import webapp2
 
 import handlers.main_handler as main_handler
 
+
+jinja_env = jinja2.Environment(
+  loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+  autoescape=True)
 
 app = webapp2.WSGIApplication(main_handler.sitemap, debug=True)

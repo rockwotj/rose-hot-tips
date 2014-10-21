@@ -8,8 +8,10 @@ Created on Sep 24, 2014.
 """
 
 from HTMLParser import HTMLParser
+import logging
 import re
 import urllib2
+
 
 class SectionPageParser:
 	""" 
@@ -182,7 +184,7 @@ class SectionPageParser:
 			else:
 				if tag == "tr" and self.__current_section != None:
 					self.__parent.sections.append(self.__current_section)
-					print self.__parent.sections[-1]  # UNCOMMENT HERE TO SEE THE CLASSES APPEAR AS THEY ARE PARSED
+					# print self.__parent.sections[-1]  # UNCOMMENT HERE TO SEE THE CLASSES APPEAR AS THEY ARE PARSED
 					self.__current_section = None
 					self.__current_state = SectionPageParser.START_ROW
 
@@ -218,7 +220,14 @@ class section:
 # If this module is running at the top level (as opposed to being
 # imported by another module), then call the 'main' function.
 #-----------------------------------------------------------------------
-if __name__ == '__main__':
-	parser = SectionPageParser("201520", "", "")
-	for section in parser.parse()[:10]:
-		print section
+def run(username, password, termcode):
+	try:
+		parser = SectionPageParser(termcode, username, password)
+		logging.info("Started Parsing " + termcode + " Section Information for " + username)
+		sections = parser.parse()
+	except:
+		logging.error("Error loading webpage")
+		return
+	for section in sections:
+		pass
+	logging.info("Ended Parsing Section Information")

@@ -21,3 +21,11 @@ libraries:
   version: "2.5.2"
 - name: jinja2
   version: latest
+
+admin_console:
+  pages:
+  - name: Update Site
+    url: /admin/update
+
+builtins:
+- deferred: on
