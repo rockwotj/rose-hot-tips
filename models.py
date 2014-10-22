@@ -13,7 +13,7 @@ class Instructor(ndb.Model):
     """ An instructor that teaches a section of a course """
     name = ndb.StringProperty()
     username = ndb.StringProperty()
-    department = ndb.StringProperty()
+    # department = ndb.StringProperty()
 
 class Course(ndb.Model):
     """ A course that Rose-Hulman offers during a year. """
@@ -45,6 +45,7 @@ class Review(ndb.Model):
     workload = ndb.IntegerProperty()
     class_ease = ndb.IntegerProperty()
     # Other
+    last_touch = ndb.DateTimeProperty(auto_now=True)
     comments = ndb.TextProperty()
     # Keys to the courses
     course = ndb.KeyProperty(kind=Course)

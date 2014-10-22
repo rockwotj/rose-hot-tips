@@ -25,7 +25,8 @@ libraries:
 admin_console:
   pages:
   - name: Update Site
-    url: /admin/update
+    url: /admin
 
 builtins:
 - deferred: on
+- remote_api: on

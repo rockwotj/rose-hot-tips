@@ -9,19 +9,17 @@ import webapp2
 
 import base_handler
 import main
-from scripts import section_scripts
-import logging
+from scripts import section_script
 
 
 class LandingPageHandler(base_handler.BasePage):
     def get_template(self):
-        logging.info("Opening main page")
         return "templates/landingPage.html"
     def get_template_values(self):
         return {}
 
 def update_section_data(username, password, termcode):
-    section_scripts.run(username, password, termcode)
+    section_script.run(username, password, termcode)
 
 class AdminUpdateHandler(webapp2.RedirectHandler):
     def get(self):
@@ -41,6 +39,5 @@ class AdminUpdateHandler(webapp2.RedirectHandler):
             self.redirect(uri=self.request.referer)
         else:
             self.redirect(uri="/")
-
 
 sitemap = [("/", LandingPageHandler), ("/admin", AdminUpdateHandler)]
