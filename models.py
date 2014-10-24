@@ -3,39 +3,42 @@ from google.appengine.ext import ndb
 
 class User(ndb.Model):
     """ A user that knows if it they are verified as a valid Rose-Hulman user. """
+    # key contains email
     verified = ndb.BooleanProperty(default=False)
 
 class Term(ndb.Model):
     """ A termcode for a class """
-    code = ndb.StringProperty()
+    # key contains termcode ie. 201410
+    name = ndb.StringProperty()  # ie. Fall Quarter 2014-2015
+    date_added = ndb.DateTimeProperty(auto_now_add=True)
 
 class Instructor(ndb.Model):
     """ An instructor that teaches a section of a course """
-    name = ndb.StringProperty()
-    username = ndb.StringProperty()
-    # department = ndb.StringProperty()
+    # key contains username ie. fisherds
+    name = ndb.StringProperty()  # David Fisher
 
 class Course(ndb.Model):
     """ A course that Rose-Hulman offers during a year. """
-    name = ndb.StringProperty()
+    # key contians courseID ie. CSSE120
+    dept = ndb.StringProperty()  # ie. CSSE
+    number = ndb.StringProperty()  # ie. 120
+    title = ndb.StringProperty()  # ie. Intro to Software Development
     description = ndb.TextProperty()
-    #  We can't use these or we get circular dependancies
-    # reviews = ndb.KeyProperty(kind=Review, repeated=True)
-    # taught_by = ndb.KeyProperty(kind=Instructor, repeated=True)
 
 class Section(ndb.Model):
     """ A section of a class that is being offered during a term. """
-    # No class KeyProperty because it will be taken care of in the
-    # parent key.
+    # parent contains the Course Key
+    # key is a generated random integer (Don't put the field in on construction)
     term = ndb.KeyProperty(kind=Term)
-    hour = ndb.StringProperty()
-    instructor = ndb.KeyProperty(kind=Instructor)
-    location = ndb.StringProperty()
-    section = ndb.StringProperty()
+    hour = ndb.StringProperty()  # ie. 3-7:8
+    instructor = ndb.KeyProperty(kind=Instructor, repeated=True)
+    location = ndb.StringProperty()  # ie. O257:M225
+    section = ndb.StringProperty()  # ie. 01
 
 class Review(ndb.Model):
     """ A review object that a user gives to a professor and a class. """
-    # User parent key
+    # parent contains the User Key
+    # All ratings on a scale from 1-5?
     # Professor ratings
     helpfulness = ndb.IntegerProperty()
     clarity = ndb.IntegerProperty()
@@ -45,9 +48,9 @@ class Review(ndb.Model):
     workload = ndb.IntegerProperty()
     class_ease = ndb.IntegerProperty()
     # Other
-    last_touch = ndb.DateTimeProperty(auto_now=True)
+    date_added = ndb.DateTimeProperty(auto_now_add=True)
     comments = ndb.TextProperty()
-    # Keys to the courses
+    # Keys to the course & prof
     course = ndb.KeyProperty(kind=Course)
     instructor = ndb.KeyProperty(kind=Instructor)
 

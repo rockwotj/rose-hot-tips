@@ -18,8 +18,6 @@ class LandingPageHandler(base_handler.BasePage):
     def get_template_values(self):
         return {}
 
-def update_section_data(username, password, termcode):
-    section_script.run(username, password, termcode)
 
 class AdminUpdateHandler(webapp2.RedirectHandler):
     def get(self):
@@ -29,13 +27,13 @@ class AdminUpdateHandler(webapp2.RedirectHandler):
         else:
             self.redirect(uri="/")
 
-
     def post(self):
         if users.is_current_user_admin():
+            # TODO: conditional to change script.
             username = self.request.get("username")
             password = self.request.get("password")
             termcode = self.request.get("termcode")
-            deferred.defer(update_section_data, username, password, termcode)
+            deferred.defer(section_script.run, username, password, termcode)
             self.redirect(uri=self.request.referer)
         else:
             self.redirect(uri="/")

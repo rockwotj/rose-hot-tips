@@ -11,6 +11,8 @@ from HTMLParser import HTMLParser
 import logging
 import re
 import urllib2
+import models
+from utils import class_utils
 
 
 class SectionPageParser:
@@ -51,12 +53,12 @@ class SectionPageParser:
 		# placeholder for the memoize dictionary of professor's username and full names
 		self.__professors = {}
 
-		self.termcode = termcode
+		self.term_code = termcode
 
 	def __get_schedule_html(self):
 		""" PRIVATE: Gets the HTML data that is the courses offered for a given quarter """
 		# use the __opener to fetch a URL
-		args = "termcode=" + SectionPageParser.term_code + "&view=table&id1=&id4=*&bt4=Room&id5="
+		args = "termcode=" + self.term_code + "&view=table&id1=&id4=*&bt4=Room&id5="
 		html_string = self.__opener.open(SectionPageParser.url, data=args).read()
 		# replace all of the '&' with '+' so that the parser works correctly.
 		return html_string.replace("&", "+")
@@ -82,7 +84,7 @@ class SectionPageParser:
 			return self.__professors[usr_id]
 		else:
 			try:
-				args = "?type=Instructor&termcode=" + SectionPageParser.term_code + "&view=table&id=" + usr_id
+				args = "?type=Instructor&termcode=" + self.term_code + "&view=table&id=" + usr_id
 				html = self.__opener.open(SectionPageParser.url + args).read()
 				profname = re.search("Name: .*?<", html).group()[6:-1]
 				self.__professors[usr_id] = profname
@@ -145,14 +147,6 @@ class SectionPageParser:
 					self.__current_section.title = data
 			elif self.__current_state == SectionPageParser.FIND_INSTR:
 				self.__current_section.iid = data
-				if data.count("&") == 0:
-					self.__current_section.instructor = self.__parent.get_professor_name(data)
-				elif data.count("&") == 1:
-					index = data.index("&")
-					instr1 = self.__parent.get_professor_name(data[:index]) + " & "
-					self.__current_section.instructor = instr1 + self.__parent.get_professor_name(data[index + 1:])
-				else:
-					self.__current_section.instructor = "Many Instructors"
 				self.__current_state = SectionPageParser.FIND_SCHEDULE
 				self.__counter = 0
 			elif self.__current_state == SectionPageParser.FIND_SCHEDULE:
@@ -194,17 +188,15 @@ class section:
 			CID: The course id number				  	Example: CSSE120
 			CRN: The number & section of a course.	 	Example: CSSE120-01
 			Title: Course Title							Example: Introduction to Software Development
-			IID: The usr name of a prof					Example: boutell
-			Instructor: Full name of prof			  	Example: Matthew R Boutell 
+			IID: The usr name of a prof. delimiter: &	Example: boutell 
 			Time: hour(s) and days of the class			Example: MTR/8:W/5-7
 			Location: Which room the class is in	   	Example: O257:O159	  """
 
-	def __init__(self, CID, CRN, Title="", IID="", Instructor="", Time="", Location=""):
+	def __init__(self, CID, CRN, Title="", IID="", Time="", Location=""):
 		self.cid = CID
 		self.crn = CRN
 		self.title = Title
 		self.iid = IID
-		self.instructor = Instructor
 		self.time = Time
 		self.location = Location
 
@@ -212,22 +204,49 @@ class section:
 		# loop through the values of __dict__ calling str? Not in order then...
 		return 	str(self.cid) + "|" + str(self.crn) + "|" + \
 				str(self.title) + "|" + str(self.iid) + "|" + \
-				str(self.instructor) + "|" + str(self.time) + \
-				"|" + str(self.location)
+				str(self.time) + "|" + str(self.location)
 
-
-#-----------------------------------------------------------------------
-# If this module is running at the top level (as opposed to being
-# imported by another module), then call the 'main' function.
-#-----------------------------------------------------------------------
 def run(username, password, termcode):
-	try:
-		parser = SectionPageParser(termcode, username, password)
-		logging.info("Started Parsing " + termcode + " Section Information for " + username)
-		sections = parser.parse()
-	except:
-		logging.error("Error loading webpage")
+	""" Collects Data from Rose web pages and puts that data into the datastore. """
+	parser = SectionPageParser(termcode, username, password)
+	logging.info("Started Parsing " + termcode + " Section Information for " + username)
+	sections = parser.parse()
+	logging.info(str(len(sections)) + " sections found")
+	term_key = class_utils.get_term_key_from_code(termcode)
+	term_year = int(termcode[:-2])
+	logging.info("Term Year:" + str(term_year))
+	if termcode[-2:] == "10":
+		term = models.Term(key=term_key, name="Fall Qtr {0}-{1}".format(term_year, term_year + 1))
+	elif termcode[-2:] == "20":
+		term = models.Term(key=term_key, name="Winter Qtr {0}-{1}".format(term_year, term_year + 1))
+	elif termcode[-2:] == "30":
+		term = models.Term(key=term_key, name="Spring Qtr {0}-{1}".format(term_year, term_year + 1))
+	elif termcode[-2:] == "40":
+		term = models.Term(key=term_key, name="Summer Qtr {0}-{1}".format(term_year, term_year + 1))
+	else:
+		logging.error("Bad termcode: " + termcode)
 		return
+	term.put()
 	for section in sections:
-		pass
+		course_key = class_utils.get_course_key_from_course_id(section.cid)
+		course = course_key.get()
+		if course:
+			instructor_ids = section.iid.split("&")
+			instructors = []
+			for instructor_id in instructor_ids:
+				instructor_key = class_utils.get_instructor_key_from_username(instructor_id)
+				instructor = instructor_key.get()
+				if not instructor:
+					instructor = models.Instructor(key=instructor_key, name=parser.get_professor_name(section.iid))
+					instructor.put()
+				instructors.append(instructor_key)
+			section_entity = models.Section(parent=course_key,
+											hour=section.time,
+											instructor=instructors,
+											location=section.location,
+											section=section.crn[section.crn.rfind("-") + 1:],
+											term=term_key)
+			section_entity.put()
+		else:
+			logging.warning("No course for {0}, not adding it to the Datastore".format(section.crn))
 	logging.info("Ended Parsing Section Information")
