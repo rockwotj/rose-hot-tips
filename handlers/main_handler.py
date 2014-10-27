@@ -9,15 +9,28 @@ import webapp2
 
 import base_handler
 import main
+import models
 from scripts import section_script, course_script
+from utils import class_utils
 
 
 class LandingPageHandler(base_handler.BasePage):
     def get_template(self):
         return "templates/landingPage.html"
-    def get_template_values(self):
-        return {}
 
+    def get_template_values(self, user):
+        return {"terms": models.Term.query()}
+
+class ResultsPageHandler(base_handler.BasePage):
+    def get_template(self):
+        return "templates/resultPage.html"
+
+    def get_template_values(self, user):
+        query = self.request.get("q")
+        termcode = self.request.get("termcode")
+        termcode_key = class_utils.get_term_key_from_code(termcode)
+        results = models.Section.query(models.Section.term == termcode_key)
+        return {"results":results}
 
 class AdminUpdateHandler(webapp2.RedirectHandler):
     def get(self):
@@ -40,4 +53,4 @@ class AdminUpdateHandler(webapp2.RedirectHandler):
         else:
             self.redirect(uri="/")
 
-sitemap = [("/", LandingPageHandler), ("/admin", AdminUpdateHandler)]
+sitemap = [("/", LandingPageHandler), ("/result", ResultsPageHandler), ("/admin", AdminUpdateHandler)]

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+{% include "templates/header.html" %}
+<body>
+	{% include "templates/navbar.html" %}
+	<!-- Start Landing Page -->
+	<div class="container" style="margin-top: 50px">
+		<div class="row">
+			<h1>Results</h1>
+			<table id="search_results" class="table table-hover">
+				<thead>
+					<tr>
+						<td>Course</td>
+						<td>Title</td>
+						<td>Instructor</td>
+						<td>Hour</td>
+						<td>Location</td>
+					</tr>
+				</thead>
+				<tbody>
+					{% for result in results %}
+					<tr>
+						<td><a href="#{{result.key.parent().string_id()}}">{{result.full_title}}</a></td>
+						<td>{{result.key.parent().get().title}}</td>
+						<td>
+						  {% for i in result.instructor %}
+						  <a href="{{i.string_id()}}">{{i.get().name}}</a>
+						  {% endfor %}
+						</td>
+						<td>{{result.hour}}</td>
+						<td>{{result.location}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	{% include "templates/footer.html" %}
+</body>
+</html>

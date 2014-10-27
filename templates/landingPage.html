@@ -10,16 +10,17 @@
 				<h1 id="main-page-h1">Rose-Hulman Hot Tips</h1>
 				<p class="lead">Insider information on your classes</p>
 				<br> <br> <br>
-				<form class="form-inline" role="form">
-					<select name="termcode" class="form-control">
-						<option value="201520">Winter Qtr 2014-15</option>
-						<option value="201510">Fall Qtr 2014-15</option>
+				<form class="form-inline" role="form" method="get" action="/result">
+					<select name="termcode" class="form-control"> 
+					    {% for term	in terms %}
+						<option value="{{term.key.string_id()}}">{{term.name}}</option> 
+						{% endfor %}
 					</select>
 					<div class="form-group input-group">
 						<input type="text" class="form-control" size="35" name="q"
 							placeholder="Search for classes"> <span
 							class="input-group-btn">
-							<button class="btn btn-primary" type="button">Go!</button>
+							<button class="btn btn-primary" type="submit">Go!</button>
 						</span>
 					</div>
 				</form>

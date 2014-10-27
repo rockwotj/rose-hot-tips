@@ -19,9 +19,10 @@ class BasePage(webapp2.RequestHandler):
         user = users.get_current_user()
         user = user_utils.get_user_key_from_email(user.email())
         template = main.jinja_env.get_template(self.get_template())
-        self.response.out.write(template.render(self.get_template_values()))
+        values = self.get_template_values(user)
+        self.response.out.write(template.render(values))
 
-    def get_template_values(self):
+    def get_template_values(self, user):
         raise Exception("Subclasses must override this method")
 
     def get_template(self):

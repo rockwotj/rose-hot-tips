@@ -34,6 +34,11 @@ class Section(ndb.Model):
     instructor = ndb.KeyProperty(kind=Instructor, repeated=True)
     location = ndb.StringProperty()  # ie. O257:M225
     section = ndb.StringProperty()  # ie. 01
+    full_title = ndb.ComputedProperty(lambda self: self.key.parent().string_id() + "-" + self.section)
+
+    @property
+    def instructors(self):
+        return self.instructor
 
 class Review(ndb.Model):
     """ A review object that a user gives to a professor and a class. """
