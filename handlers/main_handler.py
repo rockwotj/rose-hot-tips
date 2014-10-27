@@ -9,7 +9,7 @@ import webapp2
 
 import base_handler
 import main
-from scripts import section_script
+from scripts import section_script, course_script
 
 
 class LandingPageHandler(base_handler.BasePage):
@@ -29,11 +29,13 @@ class AdminUpdateHandler(webapp2.RedirectHandler):
 
     def post(self):
         if users.is_current_user_admin():
-            # TODO: conditional to change script.
-            username = self.request.get("username")
-            password = self.request.get("password")
-            termcode = self.request.get("termcode")
-            deferred.defer(section_script.run, username, password, termcode)
+            if self.request.get("parse_courses"):
+                deferred.defer(course_script.run)
+            else:
+                username = self.request.get("username")
+                password = self.request.get("password")
+                termcode = self.request.get("termcode")
+                deferred.defer(section_script.run, username, password, termcode)
             self.redirect(uri=self.request.referer)
         else:
             self.redirect(uri="/")

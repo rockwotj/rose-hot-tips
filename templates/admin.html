@@ -2,37 +2,56 @@
 <html>
 {% include "templates/header.html" %}
 <body>
+	<style>
+.well {
+	padding-bottom: 50px;
+	color: black;
+}
+</style>
 	<div class="container">
 		<br>
-		<p>Enter your KERBEROS AUTHENTICATION and the termcode to parse
-			the sections from the Rose Schedule Page.</p>
+		<div class="well">
+			<p>Click to add the course information to the database.</p>
+			<form action="/admin" method="post">
+				<input type="hidden" value="True" name="parse_courses">
+				<div class="form-group col-sm-10">
+					<input type="submit" class="btn btn-default"
+						value="Parse Course CSV File">
+				</div>
+			</form>
+		</div>
 		<br>
-		<form action="/admin" class="form-horizontal" method="post">
-			<div class="form-group">
-				<label for="username" class="col-sm-2 control-label">KERBEROS
-					Username:</label>
-				<div class="col-sm-10">
-					<input type="text" id="username" name="username">
+		<div class="well">
+			<p>Enter your KERBEROS AUTHENTICATION and the termcode to parse
+				the sections from the Rose Schedule Page.</p>
+			<br>
+			<form action="/admin" class="form-horizontal" method="post">
+				<div class="form-group">
+					<label for="username" class="col-sm-2 control-label">KERBEROS
+						Username:</label>
+					<div class="col-sm-10">
+						<input type="text" id="username" name="username">
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label for="password" class="col-sm-2 control-label">KERBEROS
-					Password:</label>
-				<div class="col-sm-10">
-					<input type="password" id="username" name="password">
+				<div class="form-group">
+					<label for="password" class="col-sm-2 control-label">KERBEROS
+						Password:</label>
+					<div class="col-sm-10">
+						<input type="password" id="username" name="password">
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label for="termcode" class="col-sm-2 control-label">Termcode:</label>
-				<div class="col-sm-10">
-					<input type="text" id="username" name="termcode">
+				<div class="form-group">
+					<label for="termcode" class="col-sm-2 control-label">Termcode:</label>
+					<div class="col-sm-10">
+						<input type="text" id="username" name="termcode">
+					</div>
 				</div>
-			</div>
-			<div class="col-sm-2"></div>
-			<div class="form-group col-sm-10">
-				<input type="submit" class="btn btn-default" value="Start Task">
-			</div>
-		</form>
+				<div class="col-sm-2"></div>
+				<div class="form-group col-sm-10">
+					<input type="submit" class="btn btn-default" value="Start Task">
+				</div>
+			</form>
+		</div>
 	</div>
 </body>
 </html>

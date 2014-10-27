@@ -1,5 +1,5 @@
 """
-TODO: Describe this script
+A Script to parse the courses at Rose-Hulman and put that information in the datastore.
 
 Created on Sep 24, 2014.
 @author: rockwotj.
@@ -11,38 +11,39 @@ import sys
 
 import main
 import models
+from utils import class_utils
 
 
 class CourseFileParser:
-	
+
 	def __init__(self, csvfile):
 		self.csvfile = csvfile
 		self.courses = []
-	
+
 	def parse(self):
 		try:
 			reader = csv.DictReader(utf_8_encoder(self.csvfile.splitlines()))
 			for row in reader:
-				current_course = Course(Title=row['COURSE_TITLE'],Dept=row['DEPT'],Number=row['COURSE_NUM'], Description=row['DESCRIPTION'])
+				current_course = Course(Title=row['COURSE_TITLE'], Dept=row['DEPT'], Number=row['COURSE_NUM'], Description=row['DESCRIPTION'])
 				self.courses.append(current_course)
-			
+
 			return self.courses
 		except:
 			print sys.exc_info()[0]
 			raise
 
 class Course:
-	
+
 	def __init__(self, Title, Dept="", Number="", Description=""):
 		self.dept = Dept
 		self.number = Number
 		self.title = Title
 		self.description = Description
-		
+
 
 def utf_8_encoder(unicode_csv_data):
 	for line in unicode_csv_data:
-		yield line.encode('utf-8')	
+		yield line.encode('utf-8')
 
 def run():
 	""" The function that will be called put the course data into the Datastore. """
@@ -51,10 +52,12 @@ def run():
 	parser = CourseFileParser(csvfile)
 	courses = parser.parse()
 	logging.info(str(len(courses)) + " courses found")
- 	for course in courses:
- 		course_entity = models.Course(dept=course.dept,
- 									number=course.number,
- 									title=course.title,
- 									description=course.description)
- 		course_entity.put()
+	for course in courses:
+		course_key = class_utils.get_course_key_from_course_id(course.dept + course.number)
+		course_entity = models.Course(key=course_key,
+									  dept=course.dept,
+ 									  number=course.number,
+ 									  title=course.title,
+ 									  description=course.description)
+		course_entity.put()
 	logging.info("Ended Parsing Course Information.")

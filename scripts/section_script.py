@@ -210,43 +210,50 @@ def run(username, password, termcode):
 	""" Collects Data from Rose web pages and puts that data into the datastore. """
 	parser = SectionPageParser(termcode, username, password)
 	logging.info("Started Parsing " + termcode + " Section Information for " + username)
-	sections = parser.parse()
-	logging.info(str(len(sections)) + " sections found")
-	term_key = class_utils.get_term_key_from_code(termcode)
-	term_year = int(termcode[:-2])
-	logging.info("Term Year:" + str(term_year))
-	if termcode[-2:] == "10":
-		term = models.Term(key=term_key, name="Fall Qtr {0}-{1}".format(term_year, term_year + 1))
-	elif termcode[-2:] == "20":
-		term = models.Term(key=term_key, name="Winter Qtr {0}-{1}".format(term_year, term_year + 1))
-	elif termcode[-2:] == "30":
-		term = models.Term(key=term_key, name="Spring Qtr {0}-{1}".format(term_year, term_year + 1))
-	elif termcode[-2:] == "40":
-		term = models.Term(key=term_key, name="Summer Qtr {0}-{1}".format(term_year, term_year + 1))
-	else:
-		logging.error("Bad termcode: " + termcode)
+	try:
+		sections = parser.parse()
+	except:
+		logging.error("Invalid credentials to Schedule page (or the parser broke)")
 		return
-	term.put()
-	for section in sections:
-		course_key = class_utils.get_course_key_from_course_id(section.cid)
-		course = course_key.get()
-		if course:
-			instructor_ids = section.iid.split("&")
-			instructors = []
-			for instructor_id in instructor_ids:
-				instructor_key = class_utils.get_instructor_key_from_username(instructor_id)
-				instructor = instructor_key.get()
-				if not instructor:
-					instructor = models.Instructor(key=instructor_key, name=parser.get_professor_name(section.iid))
-					instructor.put()
-				instructors.append(instructor_key)
-			section_entity = models.Section(parent=course_key,
+	try:
+		logging.info(str(len(sections)) + " sections found")
+		term_key = class_utils.get_term_key_from_code(termcode)
+		term_year = int(termcode[:-2])
+		logging.info("Term Year:" + str(term_year))
+		if termcode[-2:] == "10":
+			term = models.Term(key=term_key, name="Fall Qtr {0}-{1}".format(term_year, term_year + 1))
+		elif termcode[-2:] == "20":
+			term = models.Term(key=term_key, name="Winter Qtr {0}-{1}".format(term_year, term_year + 1))
+		elif termcode[-2:] == "30":
+			term = models.Term(key=term_key, name="Spring Qtr {0}-{1}".format(term_year, term_year + 1))
+		elif termcode[-2:] == "40":
+			term = models.Term(key=term_key, name="Summer Qtr {0}-{1}".format(term_year, term_year + 1))
+		else:
+			logging.error("Bad termcode: " + termcode)
+			return
+		term.put()
+		for section in sections:
+			course_key = class_utils.get_course_key_from_course_id(section.cid)
+			course = course_key.get()
+			if course:
+				instructor_ids = section.iid.split("&")
+				instructors = []
+				for instructor_id in instructor_ids:
+					instructor_key = class_utils.get_instructor_key_from_username(instructor_id)
+					instructor = instructor_key.get()
+					if not instructor:
+						instructor = models.Instructor(key=instructor_key, name=parser.get_professor_name(section.iid))
+						instructor.put()
+					instructors.append(instructor_key)
+				section_entity = models.Section(parent=course_key,
 											hour=section.time,
 											instructor=instructors,
 											location=section.location,
 											section=section.crn[section.crn.rfind("-") + 1:],
 											term=term_key)
-			section_entity.put()
-		else:
-			logging.warning("No course for {0}, not adding it to the Datastore".format(section.crn))
-	logging.info("Ended Parsing Section Information")
+				section_entity.put()
+			else:
+				logging.warning("No course for {0}, not adding it to the Datastore".format(section.crn))
+			logging.info("Ended Parsing Section Information")
+	except:
+		logging.error("Something went wrong parsing the schedule page!")
