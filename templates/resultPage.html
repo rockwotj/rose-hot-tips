@@ -3,7 +3,7 @@
 {% include "templates/header.html" %}
 <body>
 	{% include "templates/navbar.html" %}
-	<!-- Start Landing Page -->
+	<!-- Start Result Page -->
 	<div class="container" style="margin-top: 50px">
 		<div class="row">
 			<h1>Results</h1>
@@ -20,13 +20,12 @@
 				<tbody>
 					{% for result in results %}
 					<tr>
-						<td><a href="#{{result.key.parent().string_id()}}">{{result.full_title}}</a></td>
+						<td><a href="/course?id={{result.key.parent().urlsafe()}}">{{result.full_title}}</a></td>
 						<td>{{result.key.parent().get().title}}</td>
-						<td>
-						  {% for i in result.instructor %}
-						  <a href="{{i.string_id()}}">{{i.get().name}}</a>
-						  {% endfor %}
-						</td>
+						<!-- TODO: Change the profs so TBA doesn't have a link? -->
+						<td>{% for i in result.instructor %} 
+						      <a href="/professor?id={{i.urlsafe()}}">{{i.get().name}}</a>{% if not loop.last %} &amp; {% endif %} 
+						{% endfor %}</td>
 						<td>{{result.hour}}</td>
 						<td>{{result.location}}</td>
 					</tr>

@@ -90,7 +90,7 @@ class SectionPageParser:
 				self.__professors[usr_id] = profname
 				return profname
 			except:
-				return None
+				return "TBA"
 
 	class HTML_FiniteStateMachine(HTMLParser):
 		""" Inner class to handle the actual parsing of the data in the schedule page """
@@ -221,13 +221,13 @@ def run(username, password, termcode):
 		term_year = int(termcode[:-2])
 		logging.info("Term Year:" + str(term_year))
 		if termcode[-2:] == "10":
-			term = models.Term(key=term_key, name="Fall Qtr {0}-{1}".format(term_year, term_year + 1))
+			term = models.Term(key=term_key, name="Fall Qtr {0}-{1}".format(term_year - 1, term_year))
 		elif termcode[-2:] == "20":
-			term = models.Term(key=term_key, name="Winter Qtr {0}-{1}".format(term_year, term_year + 1))
+			term = models.Term(key=term_key, name="Winter Qtr {0}-{1}".format(term_year - 1, term_year))
 		elif termcode[-2:] == "30":
-			term = models.Term(key=term_key, name="Spring Qtr {0}-{1}".format(term_year, term_year + 1))
+			term = models.Term(key=term_key, name="Spring Qtr {0}-{1}".format(term_year - 1, term_year))
 		elif termcode[-2:] == "40":
-			term = models.Term(key=term_key, name="Summer Qtr {0}-{1}".format(term_year, term_year + 1))
+			term = models.Term(key=term_key, name="Summer Qtr {0}-{1}".format(term_year - 1, term_year))
 		else:
 			logging.error("Bad termcode: " + termcode)
 			return
@@ -238,6 +238,7 @@ def run(username, password, termcode):
 			if course:
 				instructor_ids = section.iid.split("&")
 				instructors = []
+				# check for TBA?
 				for instructor_id in instructor_ids:
 					instructor_key = class_utils.get_instructor_key_from_username(instructor_id)
 					instructor = instructor_key.get()
@@ -254,6 +255,7 @@ def run(username, password, termcode):
 				section_entity.put()
 			else:
 				logging.warning("No course for {0}, not adding it to the Datastore".format(section.crn))
-			logging.info("Ended Parsing Section Information")
+		logging.info("Ended Parsing Section Information")
 	except:
 		logging.error("Something went wrong parsing the schedule page!")
+		return

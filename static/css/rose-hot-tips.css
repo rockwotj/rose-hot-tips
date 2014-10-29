@@ -11,6 +11,58 @@
 	font: 6.1em "Sigmar One" !important;
 }
 
-#search_results{
+#tagline {
+	font-family: 'Cedarville Cursive', cursive;
+}
+
+#search_results {
 	font-size: .75em
+}
+
+.well {
+	padding-bottom: 50px;
+	color: black;
+}
+
+.review {
+    min-height: 245px;	
+}
+
+.review-stats {
+	float: left;
+	min-width: 300px;
+	margin-right: 25px;
+}
+
+.progress-label {
+	float: left;
+	width: 90px;
+	margin-right: 1em;
+}
+
+/* Ratings */
+.rating-block {
+	font-size: 100px;
+	color: white;
+	height: 185px;
+	width: 195px;
+	text-align: center;
+	line-height: 170px;
+	color: white;
+}
+
+.overall-rating {
+	background-color: black;
+}
+
+.ease-rating {
+	background-color: rgba(87, 81, 249, 0.64);
+}
+/* Professor */
+.helpfulness-rating, .grasp-rating {
+	background-color: rgba(236, 79, 56, 0.74);
+}
+
+.clarity-rating, .workload-rating {
+	background-color: #f7b83a;
 }
