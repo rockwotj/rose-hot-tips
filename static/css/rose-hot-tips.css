@@ -19,6 +19,8 @@
 	font-size: .75em
 }
 
+
+
 .well {
 	padding-bottom: 50px;
 	color: black;
@@ -61,12 +63,12 @@
 	background-color: black;
 }
 
-.ease-rating {
-	background-color: rgba(87, 81, 249, 0.64);
+.ease-rating {	
+	background-color: rgba(92, 168, 92, 0.77);
 }
 /* Professor */
 .helpfulness-rating, .grasp-rating {
-	background-color: rgba(236, 79, 56, 0.74);
+	background-color: rgba(87, 81, 249, 0.64);
 }
 
 .clarity-rating, .workload-rating {
