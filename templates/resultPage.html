@@ -1,39 +1,33 @@
-<!DOCTYPE html>
-<html>
-{% include "templates/header.html" %}
-<body>
-	{% include "templates/navbar.html" %}
-	<!-- Start Result Page -->
-	<div class="container" style="margin-top: 50px">
-		<div class="row">
-			<h1>Results</h1>
-			<table id="search_results" class="table table-hover">
-				<thead>
-					<tr>
-						<td>Course</td>
-						<td>Title</td>
-						<td>Instructor</td>
-						<td>Hour</td>
-						<td>Location</td>
-					</tr>
-				</thead>
-				<tbody>
-					{% for result in results %}
-					<tr>
-						<td><a href="/course?id={{result.key.parent().urlsafe()}}">{{result.full_title}}</a></td>
-						<td>{{result.key.parent().get().title}}</td>
-						<!-- TODO: Change the profs so TBA doesn't have a link? -->
-						<td>{% for i in result.instructor %} 
-						      <a href="/professor?id={{i.urlsafe()}}">{{i.get().name}}</a>{% if not loop.last %} &amp; {% endif %} 
-						{% endfor %}</td>
-						<td>{{result.hour}}</td>
-						<td>{{result.location}}</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
+{% extends "templates/templateBase.html" %} {% block content %}
+<div class="container" style="margin-top: 50px">
+	<div class="row">
+		<h1>Results</h1>
+		<table id="search_results" class="table table-hover">
+			<thead>
+				<tr>
+					<td>Course</td>
+					<td>Title</td>
+					<td>Instructor</td>
+					<td>Hour</td>
+					<td>Location</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for result in results %}
+				<tr>
+					<td><a href="/course?id={{result.key.parent().urlsafe()}}">{{result.full_title}}</a></td>
+					<td>{{result.key.parent().get().title}}</td>
+					<!-- TODO: Change the profs so TBA doesn't have a link? -->
+					<td>{% for i in result.instructor %} <a
+						href="/professor?id={{i.urlsafe()}}">{{i.get().name}}</a>{% if not
+						loop.last %} &amp; {% endif %} {% endfor %}
+					</td>
+					<td>{{result.hour}}</td>
+					<td>{{result.location}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 	</div>
-	{% include "templates/footer.html" %}
-</body>
-</html>
+</div>
+{% endblock %}

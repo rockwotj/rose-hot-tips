@@ -26,12 +26,18 @@
 
 .review {
     min-height: 245px;	
+    display: table;
 }
 
 .review-stats {
-	float: left;
+	/*float: left;*/
 	min-width: 300px;
-	margin-right: 25px;
+	display:table-cell;
+}
+
+.review-text{
+	display:table-cell;
+	padding-left: 25px;
 }
 
 .progress-label {
