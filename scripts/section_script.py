@@ -11,6 +11,9 @@ from HTMLParser import HTMLParser
 import logging
 import re
 import urllib2
+
+from google.appengine.ext import ndb
+
 import models
 from utils import class_utils
 
@@ -217,7 +220,7 @@ def run(username, password, termcode):
 		return
 	try:
 		logging.info(str(len(sections)) + " sections found")
-		term_key = class_utils.get_term_key_from_code(termcode)
+		term_key = class_utils.get_term_key(termcode)
 		term_year = int(termcode[:-2])
 		logging.info("Term Year:" + str(term_year))
 		if termcode[-2:] == "10":
@@ -233,20 +236,25 @@ def run(username, password, termcode):
 			return
 		term.put()
 		for section in sections:
-			course_key = class_utils.get_course_key_from_course_id(section.cid)
+			if section.cid.endswith("L"):
+				logging.info("Skipping lab: " + section.crn)
+				continue
+			course_key = class_utils.get_course_key(section.cid)
 			course = course_key.get()
 			if course:
 				instructor_ids = section.iid.split("&")
 				instructors = []
 				# check for TBA?
 				for instructor_id in instructor_ids:
-					instructor_key = class_utils.get_instructor_key_from_username(instructor_id)
+					instructor_key = class_utils.get_instructor_key(instructor_id)
 					instructor = instructor_key.get()
 					if not instructor:
 						instructor = models.Instructor(key=instructor_key, name=parser.get_professor_name(section.iid))
 						instructor.put()
 					instructors.append(instructor_key)
-				section_entity = models.Section(parent=course_key,
+				section_key = ndb.Key("Section", section.crn + "-" + termcode, parent=course_key)
+				section_entity = models.Section(key=section_key,
+											title=section.title,
 											hour=section.time,
 											instructor=instructors,
 											location=section.location,
@@ -256,6 +264,6 @@ def run(username, password, termcode):
 			else:
 				logging.warning("No course for {0}, not adding it to the Datastore".format(section.crn))
 		logging.info("Ended Parsing Section Information")
-	except:
-		logging.error("Something went wrong parsing the schedule page!")
+	except Exception as e:
+		logging.error("Something went wrong parsing the schedule page:" + str(e))
 		return

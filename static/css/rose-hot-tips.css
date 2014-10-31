@@ -19,27 +19,45 @@
 	font-size: .75em
 }
 
-
-
 .well {
 	padding-bottom: 50px;
 	color: black;
 }
 
 .review {
-    min-height: 245px;	
-    display: table;
+	min-height: 245px;
+	display: table;
 }
 
 .review-stats {
 	/*float: left;*/
 	min-width: 300px;
-	display:table-cell;
+	display: table-cell;
 }
 
-.review-text{
-	display:table-cell;
+.review-text {
+	display: table-cell;
 	padding-left: 25px;
+}
+/* TODO: the link colors for the reviews! */
+.review-stats>*>a {
+	color: rgb(117, 6, 6);
+}
+
+.review-stats>*>a:link {
+	color: rgb(117, 6, 6);
+}
+
+.review-stats>*>a:visited {
+	color: rgb(117, 6, 6);
+}
+
+.review-stats>*>a:hover {
+	color: rgb(117, 6, 6);
+}
+
+.review-stats>*>a:active {
+	color: rgb(117, 6, 6);
 }
 
 .progress-label {
@@ -63,7 +81,7 @@
 	background-color: black;
 }
 
-.ease-rating {	
+.ease-rating {
 	background-color: rgba(92, 168, 92, 0.77);
 }
 /* Professor */

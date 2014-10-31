@@ -3,7 +3,7 @@ from google.appengine.ext import ndb
 
 class User(ndb.Model):
     """ A user that knows if it they are verified as a valid Rose-Hulman user. """
-    # key contains email
+    # key contains email. Maybe considering changing this to a list of verified email addresses?
     verified = ndb.BooleanProperty(default=False)
 
 class Term(ndb.Model):
@@ -31,11 +31,11 @@ class Section(ndb.Model):
     # key is a generated random integer (Don't put the field in on construction)
     term = ndb.KeyProperty(kind=Term)
     hour = ndb.StringProperty()  # ie. 3-7:8
+    title = ndb.StringProperty()  # ie. Intro to Software Development (Need for special topics)
     instructor = ndb.KeyProperty(kind=Instructor, repeated=True)
     location = ndb.StringProperty()  # ie. O257:M225
     section = ndb.StringProperty()  # ie. 01
     full_title = ndb.ComputedProperty(lambda self: self.key.parent().string_id() + "-" + self.section)  # ie. CSSE120-01
-
 
 class Review(ndb.Model):
     """ A review object that a user gives to a professor and a class. """
@@ -51,7 +51,7 @@ class Review(ndb.Model):
     workload = ndb.IntegerProperty()
     class_ease = ndb.IntegerProperty()
     # Other
-    date_added = ndb.DateTimeProperty(auto_now_add=True)
+    date_added = ndb.DateTimeProperty(auto_now_add=True)  # TODO: change to termcode?
     comments = ndb.TextProperty()
     # Keys to the course & prof
     course = ndb.KeyProperty(kind=Course)

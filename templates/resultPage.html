@@ -3,6 +3,7 @@
 	<div class="row">
 		<h1>Results</h1>
 		<table id="search_results" class="table table-hover">
+			{% if results %}
 			<thead>
 				<tr>
 					<td>Course</td>
@@ -15,17 +16,19 @@
 			<tbody>
 				{% for result in results %}
 				<tr>
-					<td><a href="/course?id={{result.key.parent().urlsafe()}}">{{result.full_title}}</a></td>
-					<td>{{result.key.parent().get().title}}</td>
+					<td><a href="/course?id={{result.key.parent().string_id()}}">{{result.full_title}}</a></td>
+					<td>{{result.title}}</td>
 					<!-- TODO: Change the profs so TBA doesn't have a link? -->
 					<td>{% for i in result.instructor %} <a
-						href="/professor?id={{i.urlsafe()}}">{{i.get().name}}</a>{% if not
+						href="/professor?id={{i.string_id()}}">{{i.get().name}}</a>{% if not
 						loop.last %} &amp; {% endif %} {% endfor %}
 					</td>
 					<td>{{result.hour}}</td>
 					<td>{{result.location}}</td>
 				</tr>
-				{% endfor %}
+				{% endfor %} {% else %}
+				<p class="lead">No courses found</p>
+				{% endif %}
 			</tbody>
 		</table>
 	</div>

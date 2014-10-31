@@ -69,7 +69,7 @@ def run():
 	courses = parser.parse()
 	logging.info(str(len(courses)) + " courses found")
 	for course in courses:
-		course_key = class_utils.get_course_key_from_course_id(course.dept + course.number)
+		course_key = class_utils.get_course_key(course.dept + course.number)
 		course_entity = models.Course(key=course_key,
 									  dept=course.dept,
  									  number=course.number,

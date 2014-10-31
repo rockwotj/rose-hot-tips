@@ -9,17 +9,18 @@ import webapp2
 
 import base_handler
 import main
-import models
 from scripts import section_script, course_script
 from utils import class_utils
 
+### Normal Pages ###
 
 class LandingPageHandler(base_handler.BasePage):
     def get_template(self):
         return "templates/landingPage.html"
 
     def get_template_values(self, user):
-        return {"terms": models.Term.query().order(-models.Term.date_added)}
+        terms = class_utils.get_all_termcodes()
+        return {"terms": terms }
 
 class UserPageHandler(base_handler.BasePage):
     def get_template(self):
@@ -33,16 +34,18 @@ class CoursePageHandler(base_handler.BasePage):
         return "templates/coursePage.html"
 
     def get_template_values(self, user):
-        urlsafe = self.request.get("id")
-        return {}
+        course_id = self.request.get("id")
+        course = class_utils.get_course_key(course_id).get()
+        return {"course":course}
 
 class ProfessorPageHandler(base_handler.BasePage):
     def get_template(self):
         return "templates/professorPage.html"
 
     def get_template_values(self, user):
-        urlsafe = self.request.get("id")
-        return {}
+        username = self.request.get("id")
+        prof = class_utils.get_instructor_key(username).get()
+        return {"professor":prof}
 
 class ResultsPageHandler(base_handler.BasePage):
     def get_template(self):
@@ -51,11 +54,15 @@ class ResultsPageHandler(base_handler.BasePage):
     def get_template_values(self, user):
         query = self.request.get("q")
         termcode = self.request.get("termcode")
-        termcode_key = class_utils.get_term_key_from_code(termcode)
-        results = models.Section.query(models.Section.term == termcode_key)
+        if query:
+            results = class_utils.search_for_sections(query, termcode)
+        else:
+            results = class_utils.get_all_sections(termcode)
         return {"results":results}
 
 class ReviewHandler(base_handler.BaseAction):
+    """ TODO! """
+
     def post(self):
         base_handler.BaseAction.post(self)
 
@@ -65,6 +72,8 @@ class ValidatePageHandler(base_handler.BasePage):
 
     def get_template_values(self, user):
         return {}
+
+### Special Pages ###
 
 class AdminUpdateHandler(webapp2.RedirectHandler):
     def get(self):
@@ -86,6 +95,8 @@ class AdminUpdateHandler(webapp2.RedirectHandler):
             self.redirect(uri=self.request.referer)
         else:
             self.redirect(uri="/")
+
+### Sitemap ###
 
 sitemap = [("/", LandingPageHandler),
            ("/result", ResultsPageHandler),
