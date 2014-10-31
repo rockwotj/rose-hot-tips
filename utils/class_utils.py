@@ -39,4 +39,5 @@ def search_for_sections(query_string, termcode):
 
 def delete_termcode(termcode):
     """ TODO: Delete all sections, reviews and the termcode for a term. """
-    pass
+    section_keys = models.Section.query(models.Section.term == get_term_key(termcode), keys_only=True)
+    ndb.delete_multi(section_keys)

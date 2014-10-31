@@ -30,7 +30,6 @@
 }
 
 .review-stats {
-	/*float: left;*/
 	min-width: 300px;
 	display: table-cell;
 }
