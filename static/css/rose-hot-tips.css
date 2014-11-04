@@ -22,6 +22,7 @@
 .well {
 	padding-bottom: 50px;
 	color: black;
+	width:100%;
 }
 
 .review {
@@ -30,7 +31,7 @@
 }
 
 .review-stats {
-	min-width: 300px;
+	width: 300px;
 	display: table-cell;
 }
 

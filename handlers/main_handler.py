@@ -12,6 +12,7 @@ import main
 from models import Review
 from scripts import section_script, course_script
 from utils import class_utils, user_utils
+import models
 
 
 ### Normal Pages ###
@@ -36,8 +37,31 @@ class CoursePageHandler(base_handler.BasePage):
 
     def get_template_values(self, user):
         course_id = self.request.get("id")
-        course = class_utils.get_course_key(course_id).get()
-        return {"course":course}
+        course_key = class_utils.get_course_key(course_id)
+        reviews = models.Review.query(models.Review.course == course_key)
+        values = {"course":course_key.get(), "reviews":reviews}
+        values['overall_rating'] = 0
+        values['grasp_rating'] = 0
+        values['workload_rating'] = 0
+        values['ease_rating'] = 0
+        count = 0.0
+        for review in reviews:
+            values['overall_rating'] += (review.grasp + review.workload + review.class_ease) / 3
+            values['grasp_rating'] += review.grasp
+            values['workload_rating'] += review.workload
+            values['ease_rating'] += review.class_ease
+            count += 1.0
+        if count > 0:
+            values['overall_rating'] /= count
+            values['grasp_rating'] /= count
+            values['workload_rating'] /= count
+            values['ease_rating'] /= count
+        else:
+            values['overall_rating'] = "N/A"
+            values['grasp_rating'] = "N/A"
+            values['workload_rating'] = "N/A"
+            values['ease_rating'] = "N/A"
+        return values
 
 class ProfessorPageHandler(base_handler.BasePage):
     def get_template(self):
@@ -45,8 +69,32 @@ class ProfessorPageHandler(base_handler.BasePage):
 
     def get_template_values(self, user):
         username = self.request.get("id")
-        prof = class_utils.get_instructor_key(username).get()
-        return {"professor":prof}
+        prof_key = class_utils.get_instructor_key(username)
+        reviews = models.Review.query(models.Review.instructor == prof_key)
+        values = {"professor":prof_key.get(), "reviews":reviews}
+        values['overall_rating'] = 0
+        values['helpfulness_rating'] = 0
+        values['clarity_rating'] = 0
+        values['ease_rating'] = 0
+        count = 0.0
+        for review in reviews:
+            values['overall_rating'] += (review.helpfulness + review.clarity + review.instr_ease) / 3
+            values['helpfulness_rating'] += review.helpfulness
+            values['clarity_rating'] += review.clarity
+            values['ease_rating'] += review.instr_ease
+            count += 1.0
+        if count > 0:
+            values['overall_rating'] /= count
+            values['helpfulness_rating'] /= count
+            values['clarity_rating'] /= count
+            values['ease_rating'] /= count
+        else:
+            values['overall_rating'] = "N/A"
+            values['helpfulness_rating'] = "N/A"
+            values['clarity_rating'] = "N/A"
+            values['ease_rating'] = "N/A"
+        return values
+        return {}
 
 class ResultsPageHandler(base_handler.BasePage):
     def get_template(self):
@@ -65,8 +113,8 @@ class ReviewHandler(base_handler.BaseAction):
 
     def post(self):
         new_review = Review(parent=user_utils.get_user_key(users.get_current_user()),
-                            instructor=class_utils.get_instructor_key("prof_name"),
-                            course=class_utils.get_course_key("class_id"),
+                            instructor=class_utils.get_instructor_key(self.request.get("prof_name")),
+                            course=class_utils.get_course_key(self.request.get("class_name")),
                             helpfulness=int(self.request.get("helpfulness")),
                             clarity=int(self.request.get("clarity")),
                             instr_ease=int(self.request.get("p_ease")),
