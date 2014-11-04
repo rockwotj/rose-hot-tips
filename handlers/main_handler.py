@@ -4,15 +4,15 @@ Created on Oct 21, 2014
 '''
 
 from google.appengine.api import users
-from google.appengine.ext import deferred, ndb
+from google.appengine.ext import deferred
 import webapp2
 
 import base_handler
 import main
-from models import Review
+import models
 from scripts import section_script, course_script
 from utils import class_utils, user_utils
-import models
+
 
 
 ### Normal Pages ###
@@ -38,7 +38,7 @@ class CoursePageHandler(base_handler.BasePage):
     def get_template_values(self, user):
         course_id = self.request.get("id")
         course_key = class_utils.get_course_key(course_id)
-        reviews = models.Review.query(models.Review.course == course_key)
+        reviews = class_utils.get_course_reviews_from_key(course_key)
         values = {"course":course_key.get(), "reviews":reviews}
         values['overall_rating'] = 0
         values['grasp_rating'] = 0
@@ -70,7 +70,7 @@ class ProfessorPageHandler(base_handler.BasePage):
     def get_template_values(self, user):
         username = self.request.get("id")
         prof_key = class_utils.get_instructor_key(username)
-        reviews = models.Review.query(models.Review.instructor == prof_key)
+        reviews = class_utils.get_instructor_reviews_from_key(prof_key)
         values = {"professor":prof_key.get(), "reviews":reviews}
         values['overall_rating'] = 0
         values['helpfulness_rating'] = 0
@@ -112,7 +112,7 @@ class ResultsPageHandler(base_handler.BasePage):
 class ReviewHandler(base_handler.BaseAction):
 
     def post(self):
-        new_review = Review(parent=user_utils.get_user_key(users.get_current_user()),
+        new_review = models.Review(parent=user_utils.get_user_key(users.get_current_user()),
                             instructor=class_utils.get_instructor_key(self.request.get("prof_name")),
                             course=class_utils.get_course_key(self.request.get("class_name")),
                             helpfulness=int(self.request.get("helpfulness")),

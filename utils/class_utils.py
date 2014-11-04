@@ -38,6 +38,23 @@ def search_for_sections(query_string, termcode):
     return None
 
 def delete_termcode(termcode):
-    """ TODO: Delete all sections, reviews and the termcode for a term. """
+    """ Deletes all sections and the termcode for a term. """
     section_keys = models.Section.query(models.Section.term == get_term_key(termcode), keys_only=True)
     ndb.delete_multi(section_keys)
+    get_term_key(termcode).delete()
+
+def get_course_reviews(course_id):
+    """ Returns all the reviews for a course. """
+    return get_course_reviews_from_key(get_course_key(course_id))
+
+def get_course_reviews_from_key(course_key):
+    """ Returns all the reviews for a course key. """
+    return models.Review.query(models.Review.course == course_key).order(-models.Review.date_added)
+
+def get_instructor_reviews(username):
+    """ Returns all the reviews for a course. """
+    return get_instructor_reviews_from_key(get_instructor_key(username))
+
+def get_instructor_reviews_from_key(instructor_key):
+    """ Returns all the reviews for a course key. """
+    return models.Review.query(models.Review.instructor == instructor_key).order(-models.Review.date_added)
