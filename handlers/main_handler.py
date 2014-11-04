@@ -4,16 +4,17 @@ Created on Oct 21, 2014
 '''
 
 from google.appengine.api import users
-from google.appengine.ext import deferred
+from google.appengine.ext import deferred, ndb
 import webapp2
 
 import base_handler
 import main
+from models import Review
 from scripts import section_script, course_script
-from utils import class_utils
+from utils import class_utils, user_utils
+
 
 ### Normal Pages ###
-
 class LandingPageHandler(base_handler.BasePage):
     def get_template(self):
         return "templates/landingPage.html"
@@ -61,10 +62,20 @@ class ResultsPageHandler(base_handler.BasePage):
         return {"results":results}
 
 class ReviewHandler(base_handler.BaseAction):
-    """ TODO! """
 
     def post(self):
-        base_handler.BaseAction.post(self)
+        new_review = Review(parent=user_utils.get_user_key(users.get_current_user()),
+                            instructor=class_utils.get_instructor_key("prof_name"),
+                            course=class_utils.get_course_key("class_id"),
+                            helpfulness=int(self.request.get("helpfulness")),
+                            clarity=int(self.request.get("clarity")),
+                            instr_ease=int(self.request.get("p_ease")),
+                            grasp=int(self.request.get("grasp")),
+                            workload=int(self.request.get("workload")),
+                            class_ease=int(self.request.get("c_ease")),
+                            comments=self.request.get("comments"))
+        new_review.put()
+        self.redirect(self.request.referer)
 
 class ValidatePageHandler(base_handler.BasePage):
     def get_template(self):

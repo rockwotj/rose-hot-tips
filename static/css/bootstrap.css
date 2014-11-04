@@ -898,12 +898,12 @@ textarea {
   line-height: inherit;
 }
 a {
-  color: #6bf3ca;
+  color: #ec6868;
   text-decoration: none;
 }
 a:hover,
 a:focus {
-  color: #24edb1;
+  color: #e32424;
   text-decoration: underline;
 }
 a:focus {
@@ -2346,7 +2346,7 @@ output {
   color: #484848;
   background-color: #fffdfd;
   background-image: none;
-  border: 1px solid #cccccc;
+  border: 1px solid #3a3a3a;
   border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -2355,10 +2355,10 @@ output {
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .form-control:focus {
-  border-color: #66afe9;
+  border-color: #9d0004;
   outline: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(157, 0, 4, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(157, 0, 4, 0.6);
 }
 .form-control::-moz-placeholder {
   color: #777777;
@@ -3001,7 +3001,7 @@ fieldset[disabled] .btn-danger.active {
   background-color: #ffffff;
 }
 .btn-link {
-  color: #6bf3ca;
+  color: #ec6868;
   font-weight: normal;
   cursor: pointer;
   border-radius: 0;
@@ -3022,7 +3022,7 @@ fieldset[disabled] .btn-link {
 }
 .btn-link:hover,
 .btn-link:focus {
-  color: #24edb1;
+  color: #e32424;
   text-decoration: underline;
   background-color: transparent;
 }
@@ -3592,7 +3592,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav .open > a:hover,
 .nav .open > a:focus {
   background-color: #eeeeee;
-  border-color: #6bf3ca;
+  border-color: #ec6868;
 }
 .nav .nav-divider {
   height: 1px;
@@ -4519,7 +4519,7 @@ a.badge:focus {
 }
 a.list-group-item.active > .badge,
 .nav-pills > .active > a > .badge {
-  color: #6bf3ca;
+  color: #ec6868;
   background-color: #ffffff;
 }
 .nav-pills > li > a > .badge {
@@ -4583,7 +4583,7 @@ a.list-group-item.active > .badge,
 a.thumbnail:hover,
 a.thumbnail:focus,
 a.thumbnail.active {
-  border-color: #6bf3ca;
+  border-color: #ec6868;
 }
 .thumbnail .caption {
   padding: 9px;
@@ -5381,8 +5381,8 @@ button.close {
 }
 .modal-content {
   position: relative;
-  background-color: #ffffff;
-  border: 1px solid #999999;
+  background-color: #d1d1d1;
+  border: 3px solid #999999;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 6px;
   -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
@@ -5418,10 +5418,16 @@ button.close {
 .modal-title {
   margin: 0;
   line-height: 1.42857143;
+  color: rgba(72,0,0,0.7);
+  font-size: 30px;
+  font-family: "Dosis", sans-serif;
 }
 .modal-body {
   position: relative;
   padding: 15px;
+  color: rgba(88,0,0,0.7);
+  font-size: 20px;
+  font-family: "Dosis", sans-serif;
 }
 .modal-footer {
   padding: 15px;
