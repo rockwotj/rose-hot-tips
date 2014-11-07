@@ -17,13 +17,14 @@ class BasePage(webapp2.RequestHandler):
     """Page handlers should inherit from this one."""
     def get(self):
         user = users.get_current_user()
-        user_key = user_utils.get_user_key_from_email(user.email())
-        # TODO: check if user if verified and redirect if not!
-        template = main.jinja_env.get_template(self.get_template())
-        values = self.get_template_values(user)
-        self.response.out.write(template.render(values))
+        if user_utils.is_validated(user):
+            template = main.jinja_env.get_template(self.get_template())
+            values = self.get_template_values()
+            self.response.out.write(template.render(values))
+        else:
+            self.redirect(uri="/validate")
 
-    def get_template_values(self, user):
+    def get_template_values(self):
         raise Exception("Subclasses must override this method")
 
     def get_template(self):

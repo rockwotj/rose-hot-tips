@@ -13,14 +13,13 @@ import models
 from scripts import section_script, course_script
 from utils import class_utils, user_utils
 
-
-
 ### Normal Pages ###
+
 class LandingPageHandler(base_handler.BasePage):
     def get_template(self):
         return "templates/landingPage.html"
 
-    def get_template_values(self, user):
+    def get_template_values(self):
         terms = class_utils.get_all_termcodes()
         return {"terms": terms }
 
@@ -28,14 +27,14 @@ class UserPageHandler(base_handler.BasePage):
     def get_template(self):
         return "templates/userProfile.html"
 
-    def get_template_values(self, user):
+    def get_template_values(self):
         return {}
 
 class CoursePageHandler(base_handler.BasePage):
     def get_template(self):
         return "templates/coursePage.html"
 
-    def get_template_values(self, user):
+    def get_template_values(self):
         course_id = self.request.get("id")
         course_key = class_utils.get_course_key(course_id)
         reviews = class_utils.get_course_reviews_from_key(course_key)
@@ -67,7 +66,7 @@ class ProfessorPageHandler(base_handler.BasePage):
     def get_template(self):
         return "templates/professorPage.html"
 
-    def get_template_values(self, user):
+    def get_template_values(self):
         username = self.request.get("id")
         prof_key = class_utils.get_instructor_key(username)
         reviews = class_utils.get_instructor_reviews_from_key(prof_key)
@@ -100,7 +99,7 @@ class ResultsPageHandler(base_handler.BasePage):
     def get_template(self):
         return "templates/resultPage.html"
 
-    def get_template_values(self, user):
+    def get_template_values(self):
         query = self.request.get("q")
         termcode = self.request.get("termcode")
         if query:
@@ -125,14 +124,25 @@ class ReviewHandler(base_handler.BaseAction):
         new_review.put()
         self.redirect(self.request.referer)
 
-class ValidatePageHandler(base_handler.BasePage):
-    def get_template(self):
-        return "templates/validateUser.html"
-
-    def get_template_values(self, user):
-        return {}
-
 ### Special Pages ###
+
+class ValidatePageHandler(webapp2.RedirectHandler):
+    def get(self):
+        user = users.get_current_user()
+        if user_utils.is_validated(user):
+            self.redirect(uri="/")
+        else:
+            template = main.jinja_env.get_template("templates/validateUser.html")
+            self.response.out.write(template.render({"Validate":True}))
+
+    def post(self):
+        user = users.get_current_user()
+        valid = user_utils.validate_user(self.request.get("username"), self.request.get("password"))
+        user_utils.set_validate(user, valid)
+        if valid:
+            self.redirect(uri="/")
+        else:
+            self.redirect(uri="/validate")
 
 class AdminUpdateHandler(webapp2.RedirectHandler):
     def get(self):
@@ -141,6 +151,7 @@ class AdminUpdateHandler(webapp2.RedirectHandler):
             self.response.write(template.render({}))
         else:
             self.redirect(uri="/")
+
 
     def post(self):
         if users.is_current_user_admin():

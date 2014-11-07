@@ -3,7 +3,6 @@ from google.appengine.ext import ndb
 
 class User(ndb.Model):
     """ A user that knows if it they are verified as a valid Rose-Hulman user. """
-    # key contains email. Maybe considering changing this to a list of verified email addresses?
     verified = ndb.BooleanProperty(default=False)
 
 class Term(ndb.Model):

@@ -27,7 +27,11 @@ def get_section_key(course_section, termcode):
 
 def get_all_sections(termcode):
     """ Returns all the Section entities for a given term. termcode: 201410 """
-    return models.Section.query(models.Section.term == get_term_key(termcode))
+    term_key = get_term_key(termcode)
+    if not term_key.get():
+        return None
+    else:
+        return models.Section.query(models.Section.term == term_key)
 
 def get_all_termcodes():
     """ Returns all termcodes in order from most recent to oldest. """
@@ -35,7 +39,11 @@ def get_all_termcodes():
 
 def search_for_sections(query_string, termcode):
     """ TODO: """
-    return None
+    term_key = get_term_key(termcode)
+    if not term_key.get():
+        return None
+    else:
+        return None
 
 def delete_termcode(termcode):
     """ Deletes all sections and the termcode for a term. """

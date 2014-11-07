@@ -39,26 +39,6 @@
 	display: table-cell;
 	padding-left: 25px;
 }
-/* TODO: the link colors for the reviews! */
-.review-stats>*>a {
-	color: rgb(117, 6, 6);
-}
-
-.review-stats>*>a:link {
-	color: rgb(117, 6, 6);
-}
-
-.review-stats>*>a:visited {
-	color: rgb(117, 6, 6);
-}
-
-.review-stats>*>a:hover {
-	color: rgb(117, 6, 6);
-}
-
-.review-stats>*>a:active {
-	color: rgb(117, 6, 6);
-}
 
 .progress-label {
 	float: left;
