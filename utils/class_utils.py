@@ -2,6 +2,9 @@
 Created on Oct 21, 2014
 @author: rockwotj
 '''
+import logging
+import re
+
 from google.appengine.ext import ndb
 
 import models
@@ -38,12 +41,16 @@ def get_all_termcodes():
     return models.Term.query().order(-models.Term.date_added)
 
 def search_for_sections(query_string, termcode):
-    """ TODO: """
+    """ Searches for a section based on the section.model.search_* properties. """
     term_key = get_term_key(termcode)
     if not term_key.get():
         return None
     else:
-        return None
+        queries = query_string.split("|")
+        results = models.Section.query(models.Section.term == term_key)
+        filters = ndb.OR(models.Section.search_course.IN(queries), models.Section.search_dept.IN(queries), models.Section.search_level.IN(queries))
+        results = results.filter(filters)
+        return results
 
 def delete_termcode(termcode):
     """ Deletes all sections and the termcode for a term. """

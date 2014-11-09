@@ -16,7 +16,7 @@
 			<tbody>
 				{% for result in results %}
 				<tr>
-					<td><a href="/course?id={{result.key.parent().string_id()}}">{{result.full_title}}</a></td>
+					<td><a href="/course?id={{result.search_course}}">{{result.full_title}}</a></td>
 					<td>{{result.title}}</td>
 					<!-- TODO: Change the profs so TBA doesn't have a link? -->
 					<td>{% for i in result.instructor %} <a

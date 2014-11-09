@@ -35,6 +35,9 @@ class Section(ndb.Model):
     location = ndb.StringProperty()  # ie. O257:M225
     section = ndb.StringProperty()  # ie. 01
     full_title = ndb.ComputedProperty(lambda self: self.key.parent().string_id() + "-" + self.section)  # ie. CSSE120-01
+    search_course = ndb.ComputedProperty(lambda self: self.key.parent().string_id())  # ie. CSSE120
+    search_dept = ndb.ComputedProperty(lambda self: filter(lambda letter:letter.isalpha(), self.key.parent().string_id()))
+    search_level = ndb.ComputedProperty(lambda self: self.key.parent().string_id()[:-2])
 
 class Review(ndb.Model):
     """ A review object that a user gives to a professor and a class. """
