@@ -55,15 +55,15 @@
 	color: white;
 }
 
-@media screen and (max-width : 768px) { /* xs Styles */
-	.rating-block {
-		height: 185px;
-	}
+@media screen and (max-width : 768px) { 
+    /* xs Styles */
+    .rating-block {
+	   height: 185px;
+    }
 }
 
 @media screen and (min-width : 768px) and (max-width : 992px) {
 	/* sm Styles */
-	/* md Styles */
 	.rating-block {
 		margin: 0px 10px;
 		width: 160px;
@@ -77,10 +77,10 @@
 	/* md Styles */
 	.rating-block {
 		margin: 0px 10px;
-        width: 215px;
-        height: 200px;
-        font-size: 100px;
-        line-height: 190px;
+		width: 215px;
+		height: 200px;
+		font-size: 100px;
+		line-height: 190px;
 	}
 }
 
@@ -88,10 +88,10 @@
 	/* lg Styles */
 	.rating-block {
 		margin: 0px 10px;
-        width: 265px;
-        height: 245px;
-        font-size: 120px;
-        line-height: 235px;
+		width: 265px;
+		height: 245px;
+		font-size: 120px;
+		line-height: 235px;
 	}
 }
 
