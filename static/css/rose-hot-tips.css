@@ -55,11 +55,11 @@
 	color: white;
 }
 
-@media screen and (max-width : 768px) { 
-    /* xs Styles */
-    .rating-block {
-	   height: 185px;
-    }
+@media screen and (max-width : 768px) {
+	/* xs Styles */
+	.rating-block {
+		height: 185px;
+	}
 }
 
 @media screen and (min-width : 768px) and (max-width : 992px) {
@@ -109,4 +109,14 @@
 
 .clarity-rating, .workload-rating {
 	background-color: #f7b83a;
+}
+
+.glyphicon.smaller {
+	font-size: 12px;
+	position: relative !important;
+	top: -4px !important;
+}
+
+.spinbox-buttons{
+	top: 2px !important;
 }

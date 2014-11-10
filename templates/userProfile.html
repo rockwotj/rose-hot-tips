@@ -1,4 +1,27 @@
-{% extends "templates/templateBase.html" %}
-{% block content %}
+{% extends "templates/templateBase.html" %} {% block content %}
+<div class="container" style="margin-top: 50px">
+	<h1>My Reviews:</h1>
 
+	<div class="fuelux">
+		<!-- Checkbox example -->
+		<div class="spinbox" data-initialize="spinbox" class="ratingSpinbox">
+			<input type="text" class="form-control input-mini spinbox-input" value="3">
+			<div class="spinbox-buttons btn-group btn-group-vertical">
+				<button type="button" class="btn btn-default spinbox-up btn-xs">
+					<span class="glyphicon glyphicon-chevron-up smaller"></span><span
+						class="sr-only">Increase</span>
+				</button>
+				<button type="button" class="btn btn-default spinbox-down btn-xs">
+					<span class="glyphicon glyphicon-chevron-down smaller"></span><span
+						class="sr-only">Decrease</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+
+	{% for review in reviews %} {% else %}
+	<p class="lead">No reviews yet.</p>
+	{% endfor %}
+</div>
 {% endblock %}

@@ -1,10 +1,10 @@
 var rh = rh || {};
-rh.ht= rh.ht || {};
+rh.ht = rh.ht || {};
 
 rh.ht.addEventHandlers = function() {
 	$("#addtip").on("shown.bs.modal", function() {
 	});
-	
+
 };
 
 rh.ht.enableButtons = function() {
@@ -12,9 +12,13 @@ rh.ht.enableButtons = function() {
 	});
 };
 
-
 $(document).ready(function() {
 	rh.ht.addEventHandlers();
 	rh.ht.enableButtons();
 	$('[data-toggle="tooltip"]').tooltip();
+	$('.ratingCombobox').spinbox({
+		'value' : 1,
+		'min' : 1,
+		'max' : 5
+	});
 });
