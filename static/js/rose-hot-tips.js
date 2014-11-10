@@ -16,9 +16,4 @@ $(document).ready(function() {
 	rh.ht.addEventHandlers();
 	rh.ht.enableButtons();
 	$('[data-toggle="tooltip"]').tooltip();
-	$('.ratingCombobox').spinbox({
-		'value' : 1,
-		'min' : 1,
-		'max' : 5
-	});
 });
