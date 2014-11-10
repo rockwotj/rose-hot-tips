@@ -4,7 +4,7 @@ Created on Oct 21, 2014
 '''
 
 from google.appengine.api import users
-from google.appengine.ext import deferred
+from google.appengine.ext import deferred, ndb
 import webapp2
 
 import base_handler
@@ -13,8 +13,8 @@ import models
 from scripts import section_script, course_script
 from utils import class_utils, user_utils
 
-### Normal Pages ###
 
+### Normal Pages ###
 class LandingPageHandler(base_handler.BasePage):
     def get_template(self):
         return "templates/landingPage.html"
@@ -122,6 +122,11 @@ class ReviewHandler(base_handler.BaseAction):
                             class_ease=int(self.request.get("c_ease")),
                             comments=self.request.get("comments"))
         new_review.put()
+        self.redirect(self.request.referer)
+    
+    def deleteTip(self):
+        review_key = ndb.Key(urlsafe=self.request.get("entity_key"))
+        review_key.delete()
         self.redirect(self.request.referer)
 
 ### Special Pages ###
