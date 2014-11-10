@@ -91,9 +91,10 @@
 		font-size: 100px;
 		line-height: 190px;
 	}
-	
-	.selectpicker {
-	
+
+	.select-label {
+		position: relative;
+		right: -38px;
 	}
 }
 
@@ -106,6 +107,10 @@
 		font-size: 120px;
 		line-height: 235px;
 	}
+    .select-label {
+        position: relative;
+        right: -38px;
+    }
 }
 
 .overall-rating {
