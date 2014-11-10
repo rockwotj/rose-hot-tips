@@ -2,8 +2,6 @@
 Created on Oct 21, 2014
 @author: rockwotj
 '''
-import logging
-import re
 
 from google.appengine.ext import ndb
 
