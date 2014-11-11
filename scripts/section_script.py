@@ -249,7 +249,7 @@ def run(username, password, termcode):
 					instructor_key = class_utils.get_instructor_key(instructor_id)
 					instructor = instructor_key.get()
 					if not instructor:
-						instructor = models.Instructor(key=instructor_key, name=parser.get_professor_name(section.iid))
+						instructor = models.Instructor(key=instructor_key, name=parser.get_professor_name(instructor_id))
 						instructor.put()
 					instructors.append(instructor_key)
 				section_key = ndb.Key("Section", section.crn + "-" + termcode, parent=course_key)

@@ -21,9 +21,7 @@
 									<div class="col-sm-8">
 										<select id="prof-name"  data-title="Choose one..." class="selectpicker"
 											data-live-search="true" name="prof_name">
-											{% for prof in professors %}
-											<option value="{{prof.string_id()}}">{{prof.string_id()}}</option>
-											{% endfor %}
+											{% for prof in professors %}<option value="{{prof.string_id()}}">{{prof.string_id()}}</option>{% endfor %}
 										</select>
 									</div>
 								</div>
