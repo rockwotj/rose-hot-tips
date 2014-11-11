@@ -28,7 +28,7 @@ class UserPageHandler(base_handler.BasePage):
         return "templates/userProfile.html"
 
     def get_template_values(self):
-        return {}
+        return {"reviews":user_utils.get_all_reviews(users.get_current_user())}
 
 class CoursePageHandler(base_handler.BasePage):
     def get_template(self):

@@ -5,14 +5,19 @@ Created on Oct 21, 2014
 import urllib2
 
 from google.appengine.ext import ndb
+
 from models import User
-import logging
+from models import Review
+
 
 def get_user_key_from_email(email):
     return ndb.Key("User", email.lower())
 
 def get_user_key(user):
     return get_user_key_from_email(user.email())
+
+def get_all_reviews(user):
+    return Review.query(ancestor=get_user_key(user))
 
 def is_validated(user):
     user_entity = get_user_key(user).get()

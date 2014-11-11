@@ -1,4 +1,125 @@
-{% extends "templates/templateBase.html" %}
-{% block content %}
+{% extends "templates/templateBase.html" %} {% block content %}
+<div class="container" style="margin-top: 50px">
+	<h1>My Reviews</h1>
 
+	{% for review in reviews %}
+	<div class="well review">
+		<div class="review-stats" style="width:200px">
+			<p>
+				<a href="/professor?id={{review.instructor.string_id()}}">{{review.instructor.get().name}}</a>
+			</p>
+			<div class="fuelux">
+				<div class="spinbox" data-initialize="spinbox" class="ratingSpinbox" data-toggle="tooltip" data-placement="top"
+            title="Helpfulness Rating">
+					<input type="text" size="1" class="form-control input-mini spinbox-input"
+						value="{{review.helpfulness}}">
+					<div class="spinbox-buttons btn-group btn-group-vertical">
+						<button type="button" class="btn btn-default spinbox-up btn-xs">
+							<span class="glyphicon glyphicon-chevron-up smaller"></span><span
+								class="sr-only">Increase</span>
+						</button>
+						<button type="button" class="btn btn-default spinbox-down btn-xs">
+							<span class="glyphicon glyphicon-chevron-down smaller"></span><span
+								class="sr-only">Decrease</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="fuelux">
+				<div class="spinbox" data-initialize="spinbox" class="ratingSpinbox" data-toggle="tooltip" data-placement="top"
+            title="Clarity Rating">
+					<input type="text" size="1" class="form-control input-mini spinbox-input"
+						value="{{review.clarity}}">
+					<div class="spinbox-buttons btn-group btn-group-vertical">
+						<button type="button" class="btn btn-default spinbox-up btn-xs">
+							<span class="glyphicon glyphicon-chevron-up smaller"></span><span
+								class="sr-only">Increase</span>
+						</button>
+						<button type="button" class="btn btn-default spinbox-down btn-xs">
+							<span class="glyphicon glyphicon-chevron-down smaller"></span><span
+								class="sr-only">Decrease</span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="fuelux">
+				<div class="spinbox" data-initialize="spinbox" class="ratingSpinbox" data-toggle="tooltip" data-placement="top"
+            title="Ease Rating">
+					<input type="text" size="1" class="form-control input-mini spinbox-input"
+						value="{{review.instr_ease}}">
+					<div class="spinbox-buttons btn-group btn-group-vertical">
+						<button type="button" class="btn btn-default spinbox-up btn-xs">
+							<span class="glyphicon glyphicon-chevron-up smaller"></span><span
+								class="sr-only">Increase</span>
+						</button>
+						<button type="button" class="btn btn-default spinbox-down btn-xs">
+							<span class="glyphicon glyphicon-chevron-down smaller"></span><span
+								class="sr-only">Decrease</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+        <div class="review-stats" style="width:100px">
+            <p>
+                <a href="/course?id={{review.course.string_id()}}">{{review.course.string_id()}}</a>
+            </p>
+            <div class="fuelux">
+                <div class="spinbox" data-initialize="spinbox" class="ratingSpinbox" data-toggle="tooltip" data-placement="top"
+            title="Grasp Rating">
+                    <input type="text" size="1" class="form-control input-mini spinbox-input"
+                        value="{{review.grasp}}">
+                    <div class="spinbox-buttons btn-group btn-group-vertical">
+                        <button type="button" class="btn btn-default spinbox-up btn-xs">
+                            <span class="glyphicon glyphicon-chevron-up smaller"></span><span
+                                class="sr-only">Increase</span>
+                        </button>
+                        <button type="button" class="btn btn-default spinbox-down btn-xs">
+                            <span class="glyphicon glyphicon-chevron-down smaller"></span><span
+                                class="sr-only">Decrease</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="fuelux">
+                <div class="spinbox" data-initialize="spinbox" class="ratingSpinbox" data-toggle="tooltip" data-placement="top"
+            title="Workload Rating">
+                    <input type="text" size="1" class="form-control input-mini spinbox-input"
+                        value="{{review.workload}}">
+                    <div class="spinbox-buttons btn-group btn-group-vertical">
+                        <button type="button" class="btn btn-default spinbox-up btn-xs">
+                            <span class="glyphicon glyphicon-chevron-up smaller"></span><span
+                                class="sr-only">Increase</span>
+                        </button>
+                        <button type="button" class="btn btn-default spinbox-down btn-xs">
+                            <span class="glyphicon glyphicon-chevron-down smaller"></span><span
+                                class="sr-only">Decrease</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="fuelux">
+                <div class="spinbox" data-initialize="spinbox" class="ratingSpinbox" data-toggle="tooltip" data-placement="top"
+            title="Ease Rating">
+                    <input type="text" size="1" class="form-control input-mini spinbox-input"
+                        value="{{review.class_ease}}">
+                    <div class="spinbox-buttons btn-group btn-group-vertical">
+                        <button type="button" class="btn btn-default spinbox-up btn-xs">
+                            <span class="glyphicon glyphicon-chevron-up smaller"></span><span
+                                class="sr-only">Increase</span>
+                        </button>
+                        <button type="button" class="btn btn-default spinbox-down btn-xs">
+                            <span class="glyphicon glyphicon-chevron-down smaller"></span><span
+                                class="sr-only">Decrease</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="review-text">{{review.comments}}</div>
+	</div>
+	{% else %}
+	<p class="lead">No reviews yet.</p>
+	{% endfor %}
+</div>
 {% endblock %}
