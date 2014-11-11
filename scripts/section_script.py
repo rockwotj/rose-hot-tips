@@ -16,6 +16,7 @@ from google.appengine.ext import ndb
 
 import models
 from utils import class_utils
+from setuptools.command.sdist import entities
 
 
 class SectionPageParser:
@@ -235,6 +236,7 @@ def run(username, password, termcode):
 			logging.error("Bad termcode: " + termcode)
 			return
 		term.put()
+		entities = []
 		for section in sections:
 			if section.cid.endswith("L"):
 				logging.info("Skipping lab: " + section.crn)
@@ -260,9 +262,10 @@ def run(username, password, termcode):
 											location=section.location,
 											section=section.crn[section.crn.rfind("-") + 1:],
 											term=term_key)
-				section_entity.put()
+				entities.append(section_entity)
 			else:
 				logging.warning("No course for {0}, not adding it to the Datastore".format(section.crn))
+		ndb.put_multi(entities)
 		logging.info("Ended Parsing Section Information")
 	except Exception as e:
 		logging.error("Something went wrong parsing the schedule page:" + str(e))

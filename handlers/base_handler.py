@@ -4,13 +4,14 @@ Created on Oct 16, 2014
 '''
 import os
 
-from google.appengine.api import users
+from google.appengine.api import users, memcache
 import jinja2
 import webapp2
 
 import main
 import models
 from utils import user_utils
+import logging
 
 
 ### Pages ###
@@ -21,8 +22,17 @@ class BasePage(webapp2.RequestHandler):
         if user_utils.is_validated(user):
             template = main.jinja_env.get_template(self.get_template())
             values = self.get_template_values()
-            values["professors"] = models.Instructor.query().fetch(keys_only=True)
-            values["classes"] = models.Course.query().fetch(keys_only=True)
+            client = memcache.Client()
+            values["professors"] = client.get('professors')
+            if values["professors"] is None:
+                logging.info("Cache Miss")
+                values["professors"] = models.Instructor.query().fetch(keys_only=True)
+                client.add('professors', values["professors"])
+            values["classes"] = client.get('classes')
+            if values["classes"] is None:
+                logging.info("Cache Miss")
+                values["classes"] = models.Course.query().fetch(keys_only=True)
+                client.add('classes', values["classes"])
             self.response.out.write(template.render(values))
         else:
             self.redirect(uri="/validate")
