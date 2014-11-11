@@ -65,5 +65,5 @@ $(document).ready(function() {
 		var hot_or_not = $(this).parent().parent().parent().find(".data").attr("data-hot");
 		console.log(hot_or_not);
 	};
-	$('[data-toggle="tooltip"]').tooltip();
+	$('[data-toggle="tooltip"]').tooltip({html: true});
 });
