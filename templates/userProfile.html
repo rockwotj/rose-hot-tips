@@ -1,17 +1,82 @@
 {% extends "templates/templateBase.html" %} {% block content %}
+{% include "templates/deleteReviewModal.html" %}
 <div class="container" style="margin-top: 50px">
-	<h1>My Reviews</h1>
-
+	<h1 style="margin-bottom:40px;">My Reviews</h1>
 	{% for review in reviews %}
 	<div class="well review">
-		<div class="review-stats" style="width:200px">
+		<div class="hidden data" data-prof="{{review.instructor.string_id()}}" data-class="{{review.course.string_id()}}" data-hot="{{review.hotOrNot}}"></div>
+		<div class="hidden entity-key">{{ review.key.urlsafe() }}</div>
+			<div class="row" style="margin-top:-30px;">
+				<div class="col-sm-5">
+					<h3>Ratings</h3>
+				</div>
+				<div class="col-sm-4">
+					<h3>Comments</h3>
+				</div>
+				<div class="col-sm-3" align="right" style="margin-top:20px;">
+					<button class="btn btn-primary edit-tip" data-toggle="modal" data-target="#insert-tip"><span class="glyphicon glyphicon-pencil"></span></button>
+					<button class="btn btn-primary delete-tip" data-toggle="modal" data-target="#delete-tip"><span class="glyphicon glyphicon-remove"></span></button>
+				</div>
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-sm-5">
+					<div class="col-sm-6">
+						<p>
+							<a href="/professor?id={{review.instructor.string_id()}}" class="prof-name">{{review.instructor.get().name}}</a>
+							<span class="display-if-hot">
+								<img class="pepper" src="/static/images/hot.png" height="20px" width="20px" />
+							</span>
+						</p>
+						<label>Helpfulness:</label>
+						<span class="helpfulness">{{review.helpfulness}}</span>
+						<br>
+						<label>Clarity:</label>
+						<span class="clarity">{{review.clarity}}</span>
+						<br>
+						<label>Ease:</label>
+						<span class="p-ease">{{review.instr_ease}}</span>
+						<br>
+					</div>
+					<div class="col-sm-6">
+						 <p>
+                <a href="/course?id={{review.course.string_id()}}">{{review.course.string_id()}}</a>
+            </p>
+						<label>Grasp:</label>
+						<span class="grasp">{{review.grasp}}</span>
+						<br>
+						<label>Workload:</label>
+						<span class="workload">{{review.workload}}</span>
+						<br>
+						<label>Ease:</label>
+						<span class="c-ease">{{review.class_ease}}</span>
+						<br>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="comments">{{review.comments}}</div>
+				</div>
+			</div>
+	</div>
+	{% else %}
+	<p class="lead">No reviews yet.</p>
+	{% endfor %}
+</div>
+{% endblock %}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- 
 			<p>
-				<a href="/professor?id={{review.instructor.string_id()}}">{{review.instructor.get().name}}</a>
+				<a href="/professor?id={{review.instructor.string_id()}}" class="prof-name">{{review.instructor.get().name}}</a>
 			</p>
-			<div class="fuelux">
-				<div class="spinbox" data-initialize="spinbox" class="ratingSpinbox" data-toggle="tooltip" data-placement="top"
-            title="Helpfulness Rating">
-					<input type="text" size="1" class="form-control input-mini spinbox-input"
+					<input type="text" size="1" class="form-control input-mini spinbox-input helpfulness"
 						value="{{review.helpfulness}}">
 					<div class="spinbox-buttons btn-group btn-group-vertical">
 						<button type="button" class="btn btn-default spinbox-up btn-xs">
@@ -117,9 +182,8 @@
             </div>
         </div>
 		<div class="review-text">{{review.comments}}</div>
-	</div>
-	{% else %}
-	<p class="lead">No reviews yet.</p>
-	{% endfor %}
-</div>
-{% endblock %}
+		<div class="pull-right">
+			<button class="btn btn-primary edit-tip" data-toggle="modal" data-target="#insert-tip"><span class="glyphicon glyphicon-pencil"></span></button>
+			<button class="btn btn-primary delete-tip" data-toggle="modal" data-target="#delete-tip"><span class="glyphicon glyphicon-remove"></span></button>
+		</div> -->
+

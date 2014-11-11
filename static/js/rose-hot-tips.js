@@ -1,51 +1,47 @@
 var rh = rh || {};
 rh.ht = rh.ht || {};
 
-rh.ht.addEventHandlers = function() {
-	$("#insert-tip").on("shown.bs.modal", function() {
-		$("input[name=prof_name]").focus();
-	});
-
-};
-
 rh.ht.enableButtons = function() {
 	$("#add-tip").click(function() {
 		$("#insert-tip .modal-title").html("Add a Tip");
 		$("#insert-tip button[type=submit]").html("Add Tip");
 
-		$("#insert-tip input[name=prof_name]").val("");
-		$("#insert-tip input[name=helpfulness]").val("");
-		$("#insert-tip input[name=clarity]").val("");
-		$("#insert-tip input[name=p_ease]").val("");
-		$("#insert-tip input[name=class_name]").val("");
-		$("#insert-tip input[name=grasp]").val("");
-		$("#insert-tip input[name=workload]").val("");
-		$("#insert-tip input[name=c_ease]").val("");
+		$("#insert-tip input[name=prof_name]").val("None");
+		$("#insert-tip input[name=helpfulness]").val("3");
+		$("#insert-tip input[name=clarity]").val("3");
+		$("#insert-tip input[name=p_ease]").val("3");
+		$("#insert-tip input[name=hot_or_not]").prop("checked", false);
+		$("#insert-tip input[name=class_name]").val("None");
+		$("#insert-tip input[name=grasp]").val("3");
+		$("#insert-tip input[name=workload]").val("3");
+		$("#insert-tip input[name=c_ease]").val("3");
 		$("#insert-tip textarea[name=comments]").val("");
 		$("#insert-tip input[name=entity_key]").val("").prop("disabled", true);
 	});
 
-	$("#edit-tip").click(
-			function() {
+	$(".edit-tip").click(function() {
 				$("#insert-tip .modal-title").html("Edit this Tip");
 				$("#insert-tip button[type=submit]").html("Edit Tip");
 
-				prof_name = $(this).find(".prof-name").html();
-				helpfulness = $(this).find(".helpfulness").html();
-				clarity = $(this).find(".clarity").html();
-				p_ease = $(this).find(".p-ease").html();
-				class_name = $(this).find(".class-name").html();
-				grasp = $(this).find(".grasp").html();
-				workload = $(this).find(".workload").html();
-				c_ease = $(this).find(".c-ease").html();
-				comments = $(this).find(".comments").html();
-				entityKey = $(this).find(".entity-key").html();
+				var prof_name = $(this).parent().parent().parent().find(".data").attr("data-prof");
+				var helpfulness = $(this).parent().parent().parent().find(".helpfulness").html();
+				var clarity = $(this).parent().parent().parent().find(".clarity").html();
+				var p_ease = $(this).parent().parent().parent().find(".p-ease").html();
+				var hot_or_not = $(this).parent().parent().parent().find(".data").attr("data-hot");
+				console.log(hot_or_not);
+				var class_name = $(this).parent().parent().parent().find(".data").attr("data-class");
+				var grasp = $(this).parent().parent().parent().find(".grasp").html();
+				var workload = $(this).parent().parent().parent().find(".workload").html();
+				var c_ease = $(this).parent().parent().parent().find(".c-ease").html();
+				var comments = $(this).parent().parent().parent().find(".comments").html();
+				var entityKey = $(this).parent().parent().parent().find(".entity-key").html();
 
-				$("#insert-tip input[name=prof_name]").val(prof_name);
+				$("#insert-tip select[name=prof_name]").selectpicker('val', prof_name);
 				$("#insert-tip input[name=helpfulness]").val(helpfulness);
 				$("#insert-tip input[name=clarity]").val(clarity);
 				$("#insert-tip input[name=p_ease]").val(p_ease);
-				$("#insert-tip input[name=class_name]").val(class_name);
+				$("#insert-tip input[name=hot_or_not]").prop("checked", (hot_or_not.toLowerCase() === 'true'));
+				$("#insert-tip select[name=class_name]").selectpicker('val', class_name);
 				$("#insert-tip input[name=grasp]").val(grasp);
 				$("#insert-tip input[name=workload]").val(workload);
 				$("#insert-tip input[name=c_ease]").val(c_ease);
@@ -54,14 +50,20 @@ rh.ht.enableButtons = function() {
 						"disabled", false);
 			});
 
-	$("#delete-tip").click(function() {
-		entityKey = $(this).find(".entity-key").html();
+	$(".delete-tip").click(function() {
+		entityKey = $(this).parent().parent().parent().find(".entity-key").html();
 		$("#delete-tip input[name=entity_key]").val(entityKey);
 	});
 };
 
+	
+
+
 $(document).ready(function() {
-	rh.ht.addEventHandlers();
 	rh.ht.enableButtons();
+	$(".display-if-hot").onload = function() {
+		var hot_or_not = $(this).parent().parent().parent().find(".data").attr("data-hot");
+		console.log(hot_or_not);
+	};
 	$('[data-toggle="tooltip"]').tooltip();
 });

@@ -46,6 +46,12 @@
 	margin-right: 1em;
 }
 
+.selectpicker {
+	border-style: solid;
+	border-width: 1px;
+	border-color: black;
+}
+
 /* Ratings */
 .rating-block {
 	font-size: 100px;
@@ -71,6 +77,9 @@
 		font-size: 90px;
 		line-height: 155px;
 	}
+	.selectpicker {
+		width: 160px !important;
+	}
 }
 
 @media screen and (min-width : 992px) and (max-width : 1200px) {
@@ -81,6 +90,11 @@
 		height: 200px;
 		font-size: 100px;
 		line-height: 190px;
+	}
+
+	.select-label {
+		position: relative;
+		right: -38px;
 	}
 }
 
@@ -93,6 +107,10 @@
 		font-size: 120px;
 		line-height: 235px;
 	}
+    .select-label {
+        position: relative;
+        right: -38px;
+    }
 }
 
 .overall-rating {
@@ -117,6 +135,6 @@
 	top: -4px !important;
 }
 
-.spinbox-buttons{
+.spinbox-buttons {
 	top: 2px !important;
 }

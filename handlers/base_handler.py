@@ -9,6 +9,7 @@ import jinja2
 import webapp2
 
 import main
+import models
 from utils import user_utils
 
 
@@ -20,6 +21,8 @@ class BasePage(webapp2.RequestHandler):
         if user_utils.is_validated(user):
             template = main.jinja_env.get_template(self.get_template())
             values = self.get_template_values()
+            values["professors"] = models.Instructor.query().fetch(keys_only=True)
+            values["classes"] = models.Course.query().fetch(keys_only=True)
             self.response.out.write(template.render(values))
         else:
             self.redirect(uri="/validate")

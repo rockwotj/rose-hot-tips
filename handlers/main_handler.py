@@ -3,6 +3,8 @@ Created on Oct 21, 2014
 @author: rockwotj
 '''
 
+import datetime
+
 from google.appengine.api import users
 from google.appengine.ext import deferred, ndb
 import webapp2
@@ -28,8 +30,8 @@ class UserPageHandler(base_handler.BasePage):
         return "templates/userProfile.html"
 
     def get_template_values(self):
-        return {"reviews":user_utils.get_all_reviews(users.get_current_user())}
-
+        return {"reviews":user_utils.get_all_reviews(users.get_current_user()).order(-models.Review.last_touch_date_time)}
+    
 class CoursePageHandler(base_handler.BasePage):
     def get_template(self):
         return "templates/coursePage.html"
@@ -111,20 +113,40 @@ class ResultsPageHandler(base_handler.BasePage):
 class ReviewHandler(base_handler.BaseAction):
 
     def post(self):
-        new_review = models.Review(parent=user_utils.get_user_key(users.get_current_user()),
+        entity_key_urlsafe = self.request.get("entity_key")
+        if entity_key_urlsafe:
+            review_key= ndb.Key(urlsafe=entity_key_urlsafe)
+            review = review_key.get()
+            review.instructor = class_utils.get_instructor_key(self.request.get("prof_name"))
+            review.course=class_utils.get_course_key(self.request.get("class_name"))
+            review.helpfulness=int(self.request.get("helpfulness"))
+            review.clarity=int(self.request.get("clarity"))
+            review.instr_ease=int(self.request.get("p_ease"))
+            review.hotOrNot=bool(self.request.get("hot_or_not"))
+            review.grasp=int(self.request.get("grasp"))
+            review.workload=int(self.request.get("workload"))
+            review.class_ease=int(self.request.get("c_ease"))
+            review.comments=self.request.get("comments")
+            review.last_touch_date_time=datetime.datetime.now()
+            review.put()
+        else:
+            new_review = models.Review(parent=user_utils.get_user_key(users.get_current_user()),
                             instructor=class_utils.get_instructor_key(self.request.get("prof_name")),
                             course=class_utils.get_course_key(self.request.get("class_name")),
                             helpfulness=int(self.request.get("helpfulness")),
                             clarity=int(self.request.get("clarity")),
                             instr_ease=int(self.request.get("p_ease")),
+                            hotOrNot=bool(self.request.get("hot_or_not")),
                             grasp=int(self.request.get("grasp")),
                             workload=int(self.request.get("workload")),
                             class_ease=int(self.request.get("c_ease")),
                             comments=self.request.get("comments"))
-        new_review.put()
+            new_review.put()
         self.redirect(self.request.referer)
+
+class DeleteReviewHandler(base_handler.BaseAction):
     
-    def deleteTip(self):
+    def post(self):
         review_key = ndb.Key(urlsafe=self.request.get("entity_key"))
         review_key.delete()
         self.redirect(self.request.referer)
@@ -179,5 +201,6 @@ sitemap = [("/", LandingPageHandler),
            ("/course", CoursePageHandler),
            ("/professor", ProfessorPageHandler),
            ("/review", ReviewHandler),
+           ("/deletereview", DeleteReviewHandler),
            ("/validate", ValidatePageHandler),
            ("/admin", AdminUpdateHandler)]

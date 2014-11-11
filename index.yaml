@@ -21,3 +21,9 @@ indexes:
   - name: instructor
   - name: date_added
     direction: desc
+
+- kind: Review
+  ancestor: yes
+  properties:
+  - name: last_touch_date_time
+    direction: desc

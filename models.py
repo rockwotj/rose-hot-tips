@@ -45,6 +45,7 @@ class Review(ndb.Model):
     # key is a generated random integer (Don't put the field in on construction)
     # All ratings on a scale from 1-5?
     # Professor ratings
+    hotOrNot = ndb.BooleanProperty()
     helpfulness = ndb.IntegerProperty()
     clarity = ndb.IntegerProperty()
     instr_ease = ndb.IntegerProperty()
@@ -53,7 +54,7 @@ class Review(ndb.Model):
     workload = ndb.IntegerProperty()
     class_ease = ndb.IntegerProperty()
     # Other
-    date_added = ndb.DateTimeProperty(auto_now_add=True)  # TODO: change to termcode?
+    last_touch_date_time = ndb.DateTimeProperty(auto_now_add=True)  # TODO: change to termcode?
     comments = ndb.TextProperty()
     # Keys to the course & prof
     course = ndb.KeyProperty(kind=Course)

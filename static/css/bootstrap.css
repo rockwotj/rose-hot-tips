@@ -948,10 +948,10 @@ img {
   border-radius: 50%;
 }
 hr {
-  margin-top: 25px;
+  margin-top: 8px;
   margin-bottom: 25px;
   border: 0;
-  border-top: 1px solid #eeeeee;
+  border-top: 2px solid #4e4949;
 }
 .sr-only {
   position: absolute;
@@ -2360,6 +2360,8 @@ output {
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(157, 0, 4, 0.6);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(157, 0, 4, 0.6);
 }
+
+
 .form-control::-moz-placeholder {
   color: #777777;
   opacity: 1;
@@ -2724,6 +2726,7 @@ select[multiple].input-lg {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  
 }
 .btn:focus,
 .btn:active:focus,
@@ -2731,11 +2734,20 @@ select[multiple].input-lg {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
+  border-color: #9d0004;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(157, 0, 4, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(157, 0, 4, 0.6);
 }
+
 .btn:hover,
 .btn:focus {
   color: #333333;
   text-decoration: none;
+  border-color: #9d0004;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(157, 0, 4, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(157, 0, 4, 0.6);
 }
 .btn:active,
 .btn.active {
@@ -2766,7 +2778,7 @@ fieldset[disabled] .btn {
 .open > .dropdown-toggle.btn-default {
   color: #333333;
   background-color: #e6e6e6;
-  border-color: #adadad;
+  border-color: #adadaxd;
 }
 .btn-default:active,
 .btn-default.active,

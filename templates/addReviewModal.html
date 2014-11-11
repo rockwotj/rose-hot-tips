@@ -16,62 +16,183 @@
 					<div class="container-fluid">
 						<div class="row">
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label for="prof-name" class="col-sm-4 control-label">Professor ID</label>
+								<div class="form-group select-label">
+									<label for="prof-name" class="col-sm-4 control-label">Professor</label>
 									<div class="col-sm-8">
-										<input type="text" name="prof_name" class="form-control"
-											id="prof-name" placeholder="Professor Name">
+										<select id="prof-name"  data-title="Choose one..." class="selectpicker"
+											data-live-search="true" name="prof_name">
+											{% for prof in professors %}
+											<option value="{{prof.string_id()}}">{{prof.string_id()}}</option>
+											{% endfor %}
+										</select>
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="helpfulness" class="col-sm-7 control-label">Helpfulness</label>
 									<div class="col-sm-5">
-										<input type="text" name="helpfulness" class="form-control bfh-number"
-											id="helpfulness">
+										<div class="fuelux">
+											<div class="spinbox" data-initialize="spinbox"
+												class="ratingSpinbox">
+												<input type="text" name="helpfulness"
+													class="form-control input-mini spinbox-input">
+												<div class="spinbox-buttons btn-group btn-group-vertical">
+													<button type="button"
+														class="btn btn-default spinbox-up btn-xs">
+														<span class="glyphicon glyphicon-chevron-up smaller"></span><span
+															class="sr-only">Increase</span>
+													</button>
+													<button type="button"
+														class="btn btn-default spinbox-down btn-xs">
+														<span class="glyphicon glyphicon-chevron-down smaller"></span><span
+															class="sr-only">Decrease</span>
+													</button>
+												</div>
+											</div>
+										</div>
 									</div>
+
 								</div>
 								<div class="form-group">
 									<label for="clarity" class="col-sm-7 control-label">Clarity</label>
 									<div class="col-sm-5">
-										<input type="text" name="clarity" class="form-control"
-											id="clarity" placeholder="1-5">
+										<div class="fuelux">
+											<div class="spinbox" data-initialize="spinbox"
+												class="ratingSpinbox">
+												<input type="text" name="clarity"
+													class="form-control input-mini spinbox-input" value="3"
+													placeholder="1-5">
+												<div class="spinbox-buttons btn-group btn-group-vertical">
+													<button type="button"
+														class="btn btn-default spinbox-up btn-xs">
+														<span class="glyphicon glyphicon-chevron-up smaller"></span><span
+															class="sr-only">Increase</span>
+													</button>
+													<button type="button"
+														class="btn btn-default spinbox-down btn-xs">
+														<span class="glyphicon glyphicon-chevron-down smaller"></span><span
+															class="sr-only">Decrease</span>
+													</button>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="p-ease" class="col-sm-7 control-label">Ease</label>
 									<div class="col-sm-5">
-										<input type="text" name="p_ease" class="form-control"
-											id="p-ease" placeholder="1-5">
+										<div class="fuelux">
+											<div class="spinbox" data-initialize="spinbox"
+												class="ratingSpinbox">
+												<input type="text" name="p_ease"
+													class="form-control input-mini spinbox-input">
+												<div class="spinbox-buttons btn-group btn-group-vertical">
+													<button type="button"
+														class="btn btn-default spinbox-up btn-xs">
+														<span class="glyphicon glyphicon-chevron-up smaller"></span><span
+															class="sr-only">Increase</span>
+													</button>
+													<button type="button"
+														class="btn btn-default spinbox-down btn-xs">
+														<span class="glyphicon glyphicon-chevron-down smaller"></span><span
+															class="sr-only">Decrease</span>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="hot-or-not" class="col-sm-7 control-label">Hot or not?</label>
+									<div class="col-sm-5">
+										<input type="checkbox" name="hot_or_not" class="form-control">
 									</div>
 								</div>
 							</div>
 							<div class="col-sm-6">
-								<div class="form-group">
-									<label for="class-name" class="col-sm-4 control-label">Class ID</label>
+								<div class="form-group select-label">
+									<label for="class-name" class="col-sm-4 control-label">Class</label>
 									<div class="col-sm-8">
-										<input type="text" name="class_name" class="form-control"
-											id="class-name" placeholder="Class Name">
+										<select id="class-name" class="selectpicker"
+                                            data-live-search="true" name="class_name" title="Class ID">
+                                            {% for class in classes %}
+                                            <option>{{class.string_id()}}</option>
+                                            {% endfor %}
+                                        </select>
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="grasp" class="col-sm-7 control-label">Grasp</label>
 									<div class="col-sm-5">
-										<input type="text" name="grasp" class="form-control"
-											id="grasp" placeholder="1-5">
+										<div class="fuelux">
+											<div class="spinbox" data-initialize="spinbox"
+												class="ratingSpinbox">
+												<input type="text" name="grasp"
+													class="form-control input-mini spinbox-input" value="3"
+													placeholder="1-5">
+												<div class="spinbox-buttons btn-group btn-group-vertical">
+													<button type="button"
+														class="btn btn-default spinbox-up btn-xs">
+														<span class="glyphicon glyphicon-chevron-up smaller"></span><span
+															class="sr-only">Increase</span>
+													</button>
+													<button type="button"
+														class="btn btn-default spinbox-down btn-xs">
+														<span class="glyphicon glyphicon-chevron-down smaller"></span><span
+															class="sr-only">Decrease</span>
+													</button>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="workload" class="col-sm-7 control-label">Workload</label>
 									<div class="col-sm-5">
-										<input type="text" name="workload" class="form-control"
-											id="workload" placeholder="1-5">
+										<div class="fuelux">
+											<div class="spinbox" data-initialize="spinbox"
+												class="ratingSpinbox">
+												<input type="text" name="workload"
+													class="form-control input-mini spinbox-input" value="3"
+													placeholder="1-5">
+												<div class="spinbox-buttons btn-group btn-group-vertical">
+													<button type="button"
+														class="btn btn-default spinbox-up btn-xs">
+														<span class="glyphicon glyphicon-chevron-up smaller"></span><span
+															class="sr-only">Increase</span>
+													</button>
+													<button type="button"
+														class="btn btn-default spinbox-down btn-xs">
+														<span class="glyphicon glyphicon-chevron-down smaller"></span><span
+															class="sr-only">Decrease</span>
+													</button>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="c-ease" class="col-sm-7 control-label">Ease</label>
 									<div class="col-sm-5">
-										<input type="text" name="c_ease" class="form-control"
-											id="c-ease" placeholder="1-5">
+										<div class="fuelux">
+											<div class="spinbox" data-initialize="spinbox"
+												class="ratingSpinbox">
+												<input type="text" name="c_ease"
+													class="form-control input-mini spinbox-input" value="3"
+													placeholder="1-5">
+												<div class="spinbox-buttons btn-group btn-group-vertical">
+													<button type="button"
+														class="btn btn-default spinbox-up btn-xs">
+														<span class="glyphicon glyphicon-chevron-up smaller"></span><span
+															class="sr-only">Increase</span>
+													</button>
+													<button type="button"
+														class="btn btn-default spinbox-down btn-xs">
+														<span class="glyphicon glyphicon-chevron-down smaller"></span><span
+															class="sr-only">Decrease</span>
+													</button>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -80,14 +201,14 @@
 							<div class="form-group col-sm-12">
 								<label for="comments" class="control-label">Comments</label>
 								<textarea name="comments" class="form-control" rows="3"
-									id="comments"></textarea>
+									id="comments" placeholder="Add additional comments here..."></textarea>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 					<button type="submit" class="btn btn-primary">Add Tip</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 				</div>
 			</form>
 		</div>

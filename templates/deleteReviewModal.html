@@ -9,15 +9,15 @@
 				</button>
 				<h4 class="modal-title">Delete Tip</h4>
 			</div>
-			<form action="/review" method="deleteTip" class="form-horizontal"
+			<form action="/deletereview" method="post" class="form-horizontal"
 				role="form">
 				<input name="entity_key" type="text" class="hidden">
 				<div class="modal-body">
 					<div>Are you sure you wish to delete this hot tip?</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 					<button type="submit" class="btn btn-danger">Delete Tip</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 				</div>
 			</form>
 		</div>
