@@ -31,7 +31,7 @@ class UserPageHandler(base_handler.BasePage):
 
     def get_template_values(self):
         return {"reviews":user_utils.get_all_reviews(users.get_current_user()).order(-models.Review.last_touch_date_time)}
-    
+
 class CoursePageHandler(base_handler.BasePage):
     def get_template(self):
         return "templates/coursePage.html"
@@ -41,22 +41,22 @@ class CoursePageHandler(base_handler.BasePage):
         course_key = class_utils.get_course_key(course_id)
         reviews = class_utils.get_course_reviews_from_key(course_key)
         values = {"course":course_key.get(), "reviews":reviews}
-        values['overall_rating'] = 0
-        values['grasp_rating'] = 0
-        values['workload_rating'] = 0
-        values['ease_rating'] = 0
+        values['overall_rating'] = 0.0
+        values['grasp_rating'] = 0.0
+        values['workload_rating'] = 0.0
+        values['ease_rating'] = 0.0
         count = 0.0
         for review in reviews:
-            values['overall_rating'] += (review.grasp + review.workload + review.class_ease) / 3
-            values['grasp_rating'] += review.grasp
-            values['workload_rating'] += review.workload
-            values['ease_rating'] += review.class_ease
+            values['overall_rating'] += (review.grasp + review.workload + review.class_ease) / 3.0
+            values['grasp_rating'] += float(review.grasp)
+            values['workload_rating'] += float(review.workload)
+            values['ease_rating'] += float(review.class_ease)
             count += 1.0
         if count > 0:
-            values['overall_rating'] /= count
-            values['grasp_rating'] /= count
-            values['workload_rating'] /= count
-            values['ease_rating'] /= count
+            values['overall_rating'] = round(values['overall_rating'] / count, 1)
+            values['grasp_rating'] = round(values['grasp_rating'] / count, 1)
+            values['workload_rating'] = round(values['workload_rating'] / count, 1)
+            values['ease_rating'] = round(values['ease_rating'] / count, 1)
         else:
             values['overall_rating'] = "N/A"
             values['grasp_rating'] = "N/A"
@@ -79,16 +79,16 @@ class ProfessorPageHandler(base_handler.BasePage):
         values['ease_rating'] = 0
         count = 0.0
         for review in reviews:
-            values['overall_rating'] += (review.helpfulness + review.clarity + review.instr_ease) / 3
+            values['overall_rating'] += (review.helpfulness + review.clarity + review.instr_ease) / 3.0
             values['helpfulness_rating'] += review.helpfulness
             values['clarity_rating'] += review.clarity
             values['ease_rating'] += review.instr_ease
             count += 1.0
         if count > 0:
-            values['overall_rating'] /= count
-            values['helpfulness_rating'] /= count
-            values['clarity_rating'] /= count
-            values['ease_rating'] /= count
+            values['overall_rating'] = round(values['overall_rating'] / count, 1)
+            values['helpfulness_rating'] = round(values['helpfulness_rating'] / count, 1)
+            values['clarity_rating'] = round(values['clarity_rating'] / count, 1)
+            values['ease_rating'] = round(values['ease_rating'] / count, 1)
         else:
             values['overall_rating'] = "N/A"
             values['helpfulness_rating'] = "N/A"
@@ -115,19 +115,19 @@ class ReviewHandler(base_handler.BaseAction):
     def post(self):
         entity_key_urlsafe = self.request.get("entity_key")
         if entity_key_urlsafe:
-            review_key= ndb.Key(urlsafe=entity_key_urlsafe)
+            review_key = ndb.Key(urlsafe=entity_key_urlsafe)
             review = review_key.get()
             review.instructor = class_utils.get_instructor_key(self.request.get("prof_name"))
-            review.course=class_utils.get_course_key(self.request.get("class_name"))
-            review.helpfulness=int(self.request.get("helpfulness"))
-            review.clarity=int(self.request.get("clarity"))
-            review.instr_ease=int(self.request.get("p_ease"))
-            review.hotOrNot=bool(self.request.get("hot_or_not"))
-            review.grasp=int(self.request.get("grasp"))
-            review.workload=int(self.request.get("workload"))
-            review.class_ease=int(self.request.get("c_ease"))
-            review.comments=self.request.get("comments")
-            review.last_touch_date_time=datetime.datetime.now()
+            review.course = class_utils.get_course_key(self.request.get("class_name"))
+            review.helpfulness = int(self.request.get("helpfulness"))
+            review.clarity = int(self.request.get("clarity"))
+            review.instr_ease = int(self.request.get("p_ease"))
+            review.hotOrNot = bool(self.request.get("hot_or_not"))
+            review.grasp = int(self.request.get("grasp"))
+            review.workload = int(self.request.get("workload"))
+            review.class_ease = int(self.request.get("c_ease"))
+            review.comments = self.request.get("comments")
+            review.last_touch_date_time = datetime.datetime.now()
             review.put()
         else:
             new_review = models.Review(parent=user_utils.get_user_key(users.get_current_user()),
@@ -145,7 +145,7 @@ class ReviewHandler(base_handler.BaseAction):
         self.redirect(self.request.referer)
 
 class DeleteReviewHandler(base_handler.BaseAction):
-    
+
     def post(self):
         review_key = ndb.Key(urlsafe=self.request.get("entity_key"))
         review_key.delete()

@@ -25,6 +25,9 @@
 		<div class="review-stats">
 			<p>
 				<a href="/professor?id={{review.instructor.string_id()}}">{{review.instructor.get().name}}</a>
+				{% if review.hotOrNot %}<span class="display-if-hot">
+                                <img class="pepper" src="/static/images/hot.png" height="20px" width="20px" />
+                            </span>{% endif %}
 			</p>
 			<h5 style="margin-bottom: 18px;">
 				<a href="/course?id={{review.course.string_id()}}">{{review.course.string_id()}}</a>

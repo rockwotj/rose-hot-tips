@@ -62,7 +62,7 @@ def get_course_reviews(course_id):
 
 def get_course_reviews_from_key(course_key):
     """ Returns all the reviews for a course key. """
-    return models.Review.query(models.Review.course == course_key).order(-models.Review.date_added)
+    return models.Review.query(models.Review.course == course_key).order(-models.Review.last_touch_date_time)
 
 def get_instructor_reviews(username):
     """ Returns all the reviews for a course. """
@@ -70,4 +70,4 @@ def get_instructor_reviews(username):
 
 def get_instructor_reviews_from_key(instructor_key):
     """ Returns all the reviews for a course key. """
-    return models.Review.query(models.Review.instructor == instructor_key).order(-models.Review.date_added)
+    return models.Review.query(models.Review.instructor == instructor_key).order(-models.Review.last_touch_date_time)

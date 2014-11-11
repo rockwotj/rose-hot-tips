@@ -18,8 +18,20 @@ indexes:
 
 - kind: Review
   properties:
+  - name: course
+  - name: last_touch_date_time
+    direction: desc
+
+- kind: Review
+  properties:
   - name: instructor
   - name: date_added
+    direction: desc
+
+- kind: Review
+  properties:
+  - name: instructor
+  - name: last_touch_date_time
     direction: desc
 
 - kind: Review

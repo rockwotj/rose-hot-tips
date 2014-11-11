@@ -24,9 +24,9 @@
 					<div class="col-sm-6">
 						<p>
 							<a href="/professor?id={{review.instructor.string_id()}}" class="prof-name">{{review.instructor.get().name}}</a>
-							<span class="display-if-hot">
+							{% if review.hotOrNot %}<span class="display-if-hot">
 								<img class="pepper" src="/static/images/hot.png" height="20px" width="20px" />
-							</span>
+							</span>{% endif %}
 						</p>
 						<label>Helpfulness:</label>
 						<span class="helpfulness">{{review.helpfulness}}</span>
