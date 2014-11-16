@@ -241,6 +241,9 @@ def run(username, password, termcode):
 			if section.cid.endswith("L"):
 				logging.info("Skipping lab: " + section.crn)
 				continue
+			if section.cid.startswith("CLSK"):
+				logging.info("Skipping CLSK: " + section.crn)
+				continue
 			course_key = class_utils.get_course_key(section.cid)
 			course = course_key.get()
 			if course:

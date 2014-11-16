@@ -25,12 +25,12 @@ class BasePage(webapp2.RequestHandler):
             client = memcache.Client()
             values["professors"] = client.get('professors')
             if values["professors"] is None:
-                logging.info("Cache Miss")
+                logging.warn("Cache Miss")
                 values["professors"] = models.Instructor.query().fetch(keys_only=True)
                 client.add('professors', values["professors"])
             values["classes"] = client.get('classes')
             if values["classes"] is None:
-                logging.info("Cache Miss")
+                logging.warn("Cache Miss")
                 values["classes"] = models.Course.query().fetch(keys_only=True)
                 client.add('classes', values["classes"])
             self.response.out.write(template.render(values))
